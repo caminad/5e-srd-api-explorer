@@ -1,6 +1,4 @@
 {
-  "name": "dnd5esrd",
-  "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -10,6 +8,8 @@
   "dependencies": {
     "next": "9.4.4",
     "react": "16.13.1",
-    "react-dom": "16.13.1"
+    "react-dom": "16.13.1",
+    "swr": "^0.2.3",
+    "tailwindcss": "^1.4.6"
   }
 }

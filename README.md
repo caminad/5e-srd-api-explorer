@@ -1,4 +1,6 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# D&D 5th Edition SRD API Explorer
+
+A wrapper around https://www.dnd5eapi.co to add caching and a hypertext client.
 
 ## Getting Started
 
