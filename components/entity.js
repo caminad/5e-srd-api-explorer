@@ -21,15 +21,15 @@ const Nothing = () => (
   </p>
 );
 
-/**@param {{ data: unknown[] }} props */
-const List = ({ data }) => (
+/**@param {{ data: unknown[], url: string }} props */
+const List = ({ data, url }) => (
   <ul>
     {data.length === 0 ? (
       <Nothing />
     ) : (
       data.map((item, i) => (
         <li key={i}>
-          <Entity data={item} />
+          <Entity data={item} url={`${url}/${i}`} />
         </li>
       ))
     )}
@@ -46,23 +46,34 @@ const List = ({ data }) => (
   </ul>
 );
 
-/**@param {{ data: object }} props */
-const Record = ({ data }) => (
+/**@param {{ data: object, url: string }} props */
+const Record = ({ data, url }) => (
   <dl>
     {Object.entries(data).map(([key, value]) => {
       let className;
-      if (key === '_id' || key === 'index') {
-        className = 'private';
-      }
       if (key === 'error') {
         className = 'error';
       }
+      if (key === '$ref') {
+        return (
+          <dt key={key}>
+            <NextLink href={value.slice(4)}>
+              <a>[...]</a>
+            </NextLink>
+          </dt>
+        );
+      }
       return (
         <Fragment key={key}>
-          <dt className={className}>{key}:</dt>
+          <dt className={className}>
+            <NextLink href={`${url}/${key}`}>
+              <a>{key}</a>
+            </NextLink>
+            :
+          </dt>
 
           <dd className={className}>
-            <Entity data={value} />
+            <Entity data={value} url={`${url}/${key}`} />
           </dd>
         </Fragment>
       );
@@ -82,9 +93,6 @@ const Record = ({ data }) => (
       dd {
         grid-column: 2;
       }
-      .private {
-        color: lightgray;
-      }
       .error {
         color: crimson;
       }
@@ -99,34 +107,26 @@ const Link = ({ data }) => (
       <a>{data}</a>
     </NextLink>
 
-    <span> </span>
-
-    <small>
-      <a href={data}>[JSON]</a>
-    </small>
-
     <style jsx>{`
       a {
         text-decoration: underline;
-      }
-      small {
-        color: lightgray;
-        font-size: 0.8rem;
       }
     `}</style>
   </p>
 );
 
-/**@param {{ data: unknown }} props */
-export default function Entity({ data }) {
+/**
+ * @param {{ data: unknown, url: string }} props
+ */
+export default function Entity({ data, url }) {
   if (data === undefined) {
     return <Loading />;
   } else if (data === null) {
     return <Nothing />;
   } else if (Array.isArray(data)) {
-    return <List data={data} />;
+    return <List data={data} url={url} />;
   } else if (typeof data === 'object') {
-    return <Record data={data} />;
+    return <Record data={data} url={url} />;
   } else if (typeof data === 'string' && data.startsWith('/api/')) {
     return <Link data={data} />;
   } else {

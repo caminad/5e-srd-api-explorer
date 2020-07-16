@@ -6,7 +6,7 @@ import Entity from '../components/entity';
 
 /**@param {{ apiURL: string }} props */
 function Nav({ apiURL }) {
-  const apiURLParts = apiURL.slice(1).split('/');
+  const apiURLParts = apiURL.split('/').slice(1);
 
   return (
     <nav>
@@ -24,12 +24,6 @@ function Nav({ apiURL }) {
         </Fragment>
       ))}
 
-      <span> </span>
-
-      <small>
-        <a href={apiURL}>[JSON]</a>
-      </small>
-
       <style jsx>{`
         nav {
           font-size: 1.5rem;
@@ -41,13 +35,6 @@ function Nav({ apiURL }) {
         a:hover {
           text-decoration: underline;
         }
-        small {
-          font-size: 1rem;
-          color: lightgray;
-        }
-        small a {
-          text-decoration: underline;
-        }
       `}</style>
     </nav>
   );
@@ -56,10 +43,15 @@ function Nav({ apiURL }) {
 export default function CatchallPage() {
   const { asPath } = useRouter();
 
-  const apiURL = asPath === '/' ? '/api' : `/api${asPath}`;
+  let apiURL = `/api${asPath}`;
+  if (apiURL.endsWith(`/`)) {
+    apiURL = apiURL.slice(0, -1);
+  }
 
   const { data } = useSWR(apiURL, async (key) => {
-    const res = await fetch(key);
+    const res = await fetch(
+      `https://5e-database-static.vercel.app${key}?depth=2`
+    );
     return await res.json();
   });
 
@@ -68,7 +60,7 @@ export default function CatchallPage() {
       <Nav apiURL={apiURL} />
 
       <div className="container">
-        <Entity data={data} />
+        <Entity data={data} url={apiURL.slice(4)} />
       </div>
 
       <style jsx>{`

@@ -14,7 +14,10 @@ export default function App({ Component, pageProps }) {
 
       <footer>
         Made by <a href="https://twitter.com/kitibyte">David Jones</a> using the{' '}
-        <a href="https://www.dnd5eapi.co/">D&amp;D 5th Edition API</a> ·{' '}
+        <a href="https://github.com/bagelbits/5e-database/">
+          D&amp;D 5th Edition API Database
+        </a>
+        {' · '}
         <a href="https://github.com/kitibyte/5e-srd-api-explorer">
           github.com/kitibyte/5e-srd-api-explorer
         </a>
