@@ -1,2 +1,12 @@
-import CatchallPage from './[...page]';
-export default CatchallPage;
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
+
+export default function Index() {
+  const router = useRouter();
+
+  useEffect(() => {
+    router.replace(`/api`);
+  }, []);
+
+  return null;
+}
