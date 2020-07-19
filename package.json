@@ -3,13 +3,16 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "prepare": "node scripts/prepare.js",
     "start": "next start"
   },
   "dependencies": {
     "next": "9.4.4",
     "react": "16.13.1",
     "react-dom": "16.13.1",
-    "swr": "^0.2.3",
     "tailwindcss": "^1.4.6"
+  },
+  "devDependencies": {
+    "dotenv": "^8.2.0"
   }
 }

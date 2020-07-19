@@ -1,35 +1,18 @@
 import Head from 'next/head';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import { Fragment } from 'react';
 import 'tailwindcss/dist/base.css';
 import 'tailwindcss/dist/components.css';
 
-function Nav() {
-  const { asPath } = useRouter();
-
-  if (asPath === `/[...page]`) {
-    // FIXME: Rendered too early.
-    return null;
-  }
-
-  const breadcrumbs = [];
-  let i = 0;
-  while ((i = (asPath + `/`).indexOf(`/`, i + 1)) !== -1) {
-    breadcrumbs.push({
-      href: asPath.slice(0, i),
-      name: asPath.slice(asPath.lastIndexOf(`/`, i - 1) + 1, i),
-    });
-  }
-
+function Nav({ path }) {
   return (
     <nav>
-      {breadcrumbs.map(({ href, name }) => (
-        <Fragment key={href}>
+      {path?.map((part, i) => (
+        <Fragment key={`${i}-${part}`}>
           <span> / </span>
 
-          <Link href="/[...page]" as={href}>
-            <a>{name}</a>
+          <Link href="/[...path]" as={[``, ...path.slice(0, i + 1)].join(`/`)}>
+            <a>{part}</a>
           </Link>
         </Fragment>
       ))}
@@ -86,7 +69,7 @@ export default function App({ Component, pageProps }) {
         <title>D&amp;D 5th Edition API Explorer</title>
       </Head>
 
-      <Nav />
+      <Nav {...pageProps} />
 
       <Component {...pageProps} />
 

@@ -1,20 +1,8 @@
 import NextLink from 'next/link';
-import { Fragment, useState } from 'react';
+import { Fragment } from 'react';
 
-function Loading() {
-  return (
-    <p>
-      Loading...
-      <style jsx>{`
-        color: lightgray;
-        font-style: italic;
-      `}</style>
-    </p>
-  );
-}
-
-/**@param {{ data: object, url: string, level: number }} props */
-function Category({ data, url, level }) {
+/**@param {{ data: object, path: string[], level: number }} props */
+function Category({ data, path, level }) {
   return (
     <ul>
       {Object.entries(data).map(([key, { href, name, description }]) => {
@@ -22,7 +10,7 @@ function Category({ data, url, level }) {
           <li key={key}>
             <Record
               data={{ href, name, description }}
-              url={`${url}/${key}`}
+              path={[...path, key]}
               level={level + 1}
             />
           </li>
@@ -42,14 +30,18 @@ function Category({ data, url, level }) {
   );
 }
 
-/**@param {{ data: unknown[], url: string, level: number }} props */
-function List({ data: items, url, level }) {
+/**@param {{ data: unknown[], path: string[], level: number }} props */
+function List({ data: items, path, level }) {
   return (
     <>
       <ul>
         {items.map((item, key) => (
           <li key={key}>
-            <Entity data={item} url={`${url}/${key}`} level={level + 1} />
+            <Entity
+              data={item}
+              path={[...path, String(key)]}
+              level={level + 1}
+            />
           </li>
         ))}
       </ul>
@@ -67,44 +59,50 @@ function List({ data: items, url, level }) {
   );
 }
 
-/**@param {{ data: object, url: string, level: number }} props */
-function Record({ data: allData, url, level }) {
+/**@param {{ data: object, path: string[], level: number }} props */
+function Record({ data: allData, path, level }) {
+  const url = `/${path.join(`/`)}`;
   const { name, description, href = url, ...data } = allData;
+
+  const title =
+    name ||
+    data.class?.name ||
+    data.class ||
+    data.damage_type?.name ||
+    data.dc_type?.name;
 
   const entries = Object.entries(data);
 
   return (
     <>
-      <NextLink href="/[...page]" as={href}>
-        <a>
-          <h3>
-            {name ||
-              data.class?.name ||
-              data.class ||
-              data.damage_type?.name ||
-              data.dc_type?.name ||
-              href.slice(href.lastIndexOf(`/`) + 1)}
-          </h3>
-          {description &&
-            description
-              .split(`\n`)
-              .map((paragraph, i) => <p key={i}>{paragraph}</p>)}
-        </a>
-      </NextLink>
+      {title && (
+        <NextLink href="/[...path]" as={href}>
+          <a>
+            <h3>{title}</h3>
+            {description?.split(`\n`)?.map((paragraph, i) => (
+              <p key={i}>{paragraph}</p>
+            ))}
+          </a>
+        </NextLink>
+      )}
 
       {entries.length > 0 && (
         <dl>
           {entries.map(([key, value]) => (
             <Fragment key={key}>
               <dt className={key === 'error' ? 'error' : undefined}>
-                <NextLink href="/[...page]" as={`${url}/${key}`}>
-                  <a>{key}</a>
-                </NextLink>
+                {typeof value === `object` ? (
+                  <NextLink href="/[...path]" as={`${url}/${key}`}>
+                    <a>{key}</a>
+                  </NextLink>
+                ) : (
+                  key
+                )}
                 :
               </dt>
 
               <dd className={key === 'error' ? 'error' : undefined}>
-                <Entity data={value} url={`${url}/${key}`} level={level + 1} />
+                <Entity data={value} path={[...path, key]} level={level + 1} />
               </dd>
             </Fragment>
           ))}
@@ -118,12 +116,18 @@ function Record({ data: allData, url, level }) {
         p {
           margin-top: 0.5rem;
         }
+        a:hover h3 {
+          text-decoration: underline;
+        }
         a + dl {
           margin-top: 1rem;
         }
         dt {
           font-weight: 700;
           margin-top: 1rem;
+        }
+        dt a:hover {
+          text-decoration: underline;
         }
         dd {
           padding-left: 2rem;
@@ -154,23 +158,6 @@ function Record({ data: allData, url, level }) {
   );
 }
 
-/**@param {{ data: string }} props */
-function Link({ data }) {
-  return (
-    <p>
-      <NextLink href="/[...page]" as={data}>
-        <a>{data}</a>
-      </NextLink>
-
-      <style jsx>{`
-        a {
-          text-decoration: underline;
-        }
-      `}</style>
-    </p>
-  );
-}
-
 /**@param {{ data: unknown }} props */
 function Value({ data }) {
   return (
@@ -192,23 +179,15 @@ function Value({ data }) {
 }
 
 /**
- * @param {{ data: unknown, url: string, level?: number }} props
+ * @param {{ data: unknown, path: string[], level?: number }} props
  */
-export default function Entity({ data, url, level = 0 }) {
-  if (url.endsWith(`/`)) {
-    url = url.slice(0, -1);
-  }
-
-  if (data === undefined) {
-    return <Loading />;
-  } else if (/^\/api(?:\/[^/]+)?$/.test(url)) {
-    return <Category data={data} url={url} level={level} />;
+export default function Entity({ data, path, level = 0 }) {
+  if (path.length < 3) {
+    return <Category data={data} path={path} level={level} />;
   } else if (Array.isArray(data)) {
-    return <List data={data} url={url} level={level} />;
+    return <List data={data} path={path} level={level} />;
   } else if (typeof data === 'object') {
-    return <Record data={data} url={url} level={level} />;
-  } else if (typeof data === 'string' && data.startsWith('/api/')) {
-    return <Link data={data} />;
+    return <Record data={data} path={path} level={level} />;
   } else {
     return <Value data={data} />;
   }
