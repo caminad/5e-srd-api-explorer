@@ -42,31 +42,6 @@ function Category({ data, url, level }) {
   );
 }
 
-/**
- * @template T
- * @param {T[]} items
- * @param {number} cutoff
- */
-function useCutoff(items, cutoff) {
-  const [expanded, setExpanded] = useState(false);
-
-  const toggle = () => setExpanded((state) => !state);
-
-  if (expanded || items.length - cutoff < 2) {
-    return {
-      items,
-      hidden: [],
-      toggle,
-    };
-  } else {
-    return {
-      items: items.slice(0, cutoff),
-      hidden: items.slice(cutoff),
-      toggle,
-    };
-  }
-}
-
 /**@param {{ data: unknown[], url: string, level: number }} props */
 function List({ data: items, url, level }) {
   return (
@@ -100,21 +75,22 @@ function Record({ data: allData, url, level }) {
 
   return (
     <>
-      <h3>
-        <NextLink href="/[...page]" as={href}>
-          <a>
+      <NextLink href="/[...page]" as={href}>
+        <a>
+          <h3>
             {name ||
+              data.class?.name ||
+              data.class ||
               data.damage_type?.name ||
               data.dc_type?.name ||
               href.slice(href.lastIndexOf(`/`) + 1)}
-          </a>
-        </NextLink>
-      </h3>
-
-      {description &&
-        description
-          .split(`\n`)
-          .map((paragraph, i) => <p key={i}>{paragraph}</p>)}
+          </h3>
+          {description &&
+            description
+              .split(`\n`)
+              .map((paragraph, i) => <p key={i}>{paragraph}</p>)}
+        </a>
+      </NextLink>
 
       {entries.length > 0 && (
         <dl>
@@ -142,7 +118,7 @@ function Record({ data: allData, url, level }) {
         p {
           margin-top: 0.5rem;
         }
-        p + dl {
+        a + dl {
           margin-top: 1rem;
         }
         dl {
