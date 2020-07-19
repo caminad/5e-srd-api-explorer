@@ -28,6 +28,16 @@ function Category({ data, url, level }) {
           </li>
         );
       })}
+
+      <style jsx>{`
+        li:not(:first-child) {
+          padding-top: 0.5rem;
+        }
+        li:not(:last-child) {
+          padding-bottom: 0.5rem;
+          border-bottom: 1px solid lightgray;
+        }
+      `}</style>
     </ul>
   );
 }
@@ -86,39 +96,55 @@ function List({ data: items, url, level }) {
 function Record({ data: allData, url, level }) {
   const { name, description, href = url, ...data } = allData;
 
+  const entries = Object.entries(data);
+
   return (
     <>
-      <dl>
-        <dt>
-          <NextLink href="/[...page]" as={href}>
-            <a>{name || href.slice(href.lastIndexOf(`/`) + 1)}</a>
-          </NextLink>
-        </dt>
+      <h3>
+        <NextLink href="/[...page]" as={href}>
+          <a>
+            {name ||
+              data.damage_type?.name ||
+              data.dc_type?.name ||
+              href.slice(href.lastIndexOf(`/`) + 1)}
+          </a>
+        </NextLink>
+      </h3>
 
-        <dd>
-          {description &&
-            description
-              .split(`\n`)
-              .map((paragraph, i) => <p key={i}>{paragraph}</p>)}
-        </dd>
+      {description &&
+        description
+          .split(`\n`)
+          .map((paragraph, i) => <p key={i}>{paragraph}</p>)}
 
-        {Object.entries(data).map(([key, value]) => (
-          <Fragment key={key}>
-            <dt className={key === 'error' ? 'error' : undefined}>
-              <NextLink href="/[...page]" as={`${url}/${key}`}>
-                <a>{key}</a>
-              </NextLink>
-              :
-            </dt>
+      {entries.length > 0 && (
+        <dl>
+          {entries.map(([key, value]) => (
+            <Fragment key={key}>
+              <dt className={key === 'error' ? 'error' : undefined}>
+                <NextLink href="/[...page]" as={`${url}/${key}`}>
+                  <a>{key}</a>
+                </NextLink>
+                :
+              </dt>
 
-            <dd className={key === 'error' ? 'error' : undefined}>
-              <Entity data={value} url={`${url}/${key}`} level={level + 1} />
-            </dd>
-          </Fragment>
-        ))}
-      </dl>
+              <dd className={key === 'error' ? 'error' : undefined}>
+                <Entity data={value} url={`${url}/${key}`} level={level + 1} />
+              </dd>
+            </Fragment>
+          ))}
+        </dl>
+      )}
 
       <style jsx>{`
+        h3 {
+          font-weight: 700;
+        }
+        p {
+          margin-top: 0.5rem;
+        }
+        p + dl {
+          margin-top: 1rem;
+        }
         dl {
           display: grid;
           grid-template-columns: auto 1fr;
@@ -131,9 +157,6 @@ function Record({ data: allData, url, level }) {
         }
         dd {
           grid-column: 2;
-        }
-        p:not(:last-child) {
-          margin-bottom: 0.5rem;
         }
         .error {
           color: crimson;
@@ -190,7 +213,7 @@ export default function Entity({ data, url, level = 0 }) {
 
   if (data === undefined) {
     return <Loading />;
-  } else if (/^\/api\/[^/]+$/.test(url)) {
+  } else if (/^\/api(?:\/[^/]+)?$/.test(url)) {
     return <Category data={data} url={url} level={level} />;
   } else if (Array.isArray(data)) {
     return <List data={data} url={url} level={level} />;
