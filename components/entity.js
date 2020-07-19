@@ -121,18 +121,30 @@ function Record({ data: allData, url, level }) {
         a + dl {
           margin-top: 1rem;
         }
-        dl {
-          display: grid;
-          grid-template-columns: auto 1fr;
-          grid-row-gap: 1rem;
-          grid-column-gap: 1rem;
-        }
         dt {
-          grid-column: 1;
           font-weight: 700;
+          margin-top: 1rem;
         }
         dd {
-          grid-column: 2;
+          padding-left: 2rem;
+          margin-top: 1rem;
+        }
+        @media (min-width: 640px) {
+          dl {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            grid-row-gap: 1rem;
+            grid-column-gap: 1rem;
+          }
+          dt {
+            grid-column: 1;
+            margin-top: 0;
+          }
+          dd {
+            grid-column: 2;
+            padding-left: 0;
+            margin-top: 0;
+          }
         }
         .error {
           color: crimson;
