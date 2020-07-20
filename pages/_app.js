@@ -4,14 +4,27 @@ import { Fragment } from 'react';
 import 'tailwindcss/dist/base.css';
 import 'tailwindcss/dist/components.css';
 
-function Nav({ path }) {
+function Nav({ path = [] }) {
   return (
     <nav>
-      {path?.map((part, i) => (
+      <Link href="/">
+        <a>home</a>
+      </Link>
+
+      <span> / </span>
+
+      <Link href="/explore">
+        <a>explore</a>
+      </Link>
+
+      {path.map((part, i) => (
         <Fragment key={`${i}-${part}`}>
           <span> / </span>
 
-          <Link href="/[...path]" as={[``, ...path.slice(0, i + 1)].join(`/`)}>
+          <Link
+            href="/explore/[...path]"
+            as={[`/explore`, ...path.slice(0, i + 1)].join(`/`)}
+          >
             <a>{part}</a>
           </Link>
         </Fragment>
@@ -19,7 +32,7 @@ function Nav({ path }) {
 
       <style jsx>{`
         nav {
-          font-size: 1.5rem;
+          font-size: 1.25rem;
           margin-bottom: 1.5rem;
         }
         span {

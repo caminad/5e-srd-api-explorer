@@ -1,5 +1,5 @@
-import DATA from '../data/5e.json';
-import Entity from '../components/entity';
+import DATA from '../../data/5e.json';
+import Entity from '../../components/entity';
 
 /**
  * @param {unknown} obj
@@ -25,17 +25,20 @@ function titleize(slug) {
 
 /**@param {import('next').GetServerSidePropsContext<{ path: string[] }>} context */
 export async function getServerSideProps(context) {
-  const { path } = context.params;
+  const { path = [] } = context.params;
 
   let data = dig(DATA, path) ?? null;
 
-  if (typeof data === `object` && data !== null && path.length < 3) {
+  if (typeof data === `object` && data !== null && path.length < 2) {
     // Don’t send all of the data down if an index is requested.
     data = Object.entries(data).reduce((shallow, [key, value]) => {
-      shallow[key] = {
-        name: value.name ?? titleize(key),
-        description: value.description ?? null,
-      };
+      if (!key.startsWith(`_`)) {
+        shallow[key] = {
+          _path: value._path,
+          name: value.name ?? titleize(key),
+          description: value.description ?? null,
+        };
+      }
       return shallow;
     }, {});
   }

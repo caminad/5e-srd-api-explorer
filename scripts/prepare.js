@@ -2,7 +2,6 @@ require(`dotenv`).config();
 
 const fetch = require(`node-fetch`).default;
 const fs = require(`fs`).promises;
-const { basename, dirname, relative, sep } = require(`path`).posix;
 
 const numericCollator = new Intl.Collator(undefined, { numeric: true });
 
@@ -12,7 +11,7 @@ run().catch((error) => {
 });
 
 /**
- * @typedef {{ href: string, [key: string]: unknown }} Entity
+ * @typedef {{ _path: string[], [key: string]: unknown }} Entity
  */
 
 async function run() {
@@ -68,28 +67,7 @@ function reviver(key, value) {
     case `special`:
       if (Array.isArray(value)) {
         // Ensure that description-like values are strings.
-        return reviver(key, value.join(`\n`));
-      } else {
-        break;
-      }
-  }
-
-  switch (typeof value) {
-    case `string`:
-      if (value.startsWith(`/api/`)) {
-        // Sorce uses a variety of keys for references, this makes sure that they’re all caught.
-        this.href = value;
-        return /* drop replaced */;
-      } else if (value.startsWith(`http://www.dnd5eapi.co/api/`)) {
-        // Re-write absolute URLs which all use numeric ids.
-        const parent = dirname(value.slice(value.indexOf(`/api/`)));
-        const slug = /**@type {string} */ (this.name)
-          .toLowerCase()
-          .replace(/ /g, `-`);
-        this.href = `${parent}/${slug}`;
-        return /* drop replaced */;
-      } else {
-        break;
+        value = value.join(`\n`);
       }
   }
 
@@ -97,6 +75,23 @@ function reviver(key, value) {
     return /* drop falsy */;
   } else if (typeof value === `object` && Object.keys(value).length === 0) {
     return /* drop empty */;
+  } else if (
+    typeof value === `string` &&
+    (value.startsWith(`/api/`) ||
+      value.startsWith(`http://www.dnd5eapi.co/api/`))
+  ) {
+    // Sorce uses a variety of keys for references, this makes sure that they’re all caught.
+    let path = value.split(`/`);
+    path = path.slice(path.indexOf(`api`) + 1);
+    if (
+      Number.isInteger(Number(path[path.length - 1])) &&
+      typeof this.name === `string`
+    ) {
+      // Re-write URLs using numeric IDs to use slugs.
+      path[path.length - 1] = this.name.toLowerCase().replace(/ /g, `-`);
+    }
+    this._path = path;
+    return /* drop replaced */;
   } else {
     return value;
   }
@@ -115,15 +110,15 @@ function replacer(key, value) {
     const entities = /**@type {Entity[]} */ (value);
 
     value = {};
-    for (const { href, ...body } of entities) {
+    for (const entity of entities) {
       let index = value;
-      for (const segment of dirname(relative(sep, href)).split(sep)) {
+      for (const [i, segment] of entity._path.slice(0, -1).entries()) {
         if (index[segment] === undefined) {
-          index[segment] = {}; // create a new index
+          index[segment] = { _path: entity._path.slice(0, i + 1) }; // create a new index
         }
-        index = /**@type {Record<string, unknown>} */ (index[segment]); // descend
+        index = index[segment]; // descend
       }
-      index[basename(href)] = body;
+      index[entity._path[entity._path.length - 1]] = entity;
     }
   } else if (
     typeof value === 'object' &&

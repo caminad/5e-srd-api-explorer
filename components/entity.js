@@ -17,11 +17,11 @@ function NotFound() {
 function Category({ data, path, level }) {
   return (
     <ul>
-      {Object.entries(data).map(([key, { href, name, description }]) => {
+      {Object.entries(data).map(([key, { _path, name, description }]) => {
         return (
           <li key={key}>
             <Record
-              data={{ href, name, description }}
+              data={{ _path, name, description }}
               path={[...path, key]}
               level={level + 1}
             />
@@ -71,8 +71,7 @@ function List({ data: items, path, level }) {
 
 /**@param {{ data: object, path: string[], level: number }} props */
 function Record({ data: allData, path, level }) {
-  const url = `/${path.join(`/`)}`;
-  const { name, description, href = url, ...data } = allData;
+  const { name, description, _path, ...data } = allData;
 
   const title =
     name ||
@@ -80,17 +79,20 @@ function Record({ data: allData, path, level }) {
     data.class ||
     data.damage_type?.name ||
     data.dc_type?.name ||
-    href.slice(href.lastIndexOf(`/`) + 1).replace(/-/g, ` `);
+    _path?.[_path.length - 1].replace(/-/g, ` `);
 
   const entries = Object.entries(data);
 
   return (
     <>
       {title && (
-        <NextLink href="/[...path]" as={href}>
+        <NextLink
+          href="/explore/[...path]"
+          as={[`/explore`, ...(_path || path)].join(`/`)}
+        >
           <a>
             <h3>{title}</h3>
-            {description?.split(`\n`)?.map((paragraph, i) => (
+            {description?.split(`\n`).map((paragraph, i) => (
               <p key={i}>{paragraph}</p>
             ))}
           </a>
@@ -102,8 +104,11 @@ function Record({ data: allData, path, level }) {
           {entries.map(([key, value]) => (
             <Fragment key={key}>
               <dt>
-                {typeof value === `object` ? (
-                  <NextLink href="/[...path]" as={`${url}/${key}`}>
+                {Array.isArray(value._path) ? (
+                  <NextLink
+                    href="/explore/[...path]"
+                    as={`/explore/${value._path.join(`/`)}`}
+                  >
                     <a>{key}</a>
                   </NextLink>
                 ) : (
@@ -192,7 +197,7 @@ function Value({ data }) {
 export default function Entity({ data, path, level = 0 }) {
   if (data === null) {
     return <NotFound />;
-  } else if (path.length < 3) {
+  } else if (path.length < 2) {
     return <Category data={data} path={path} level={level} />;
   } else if (Array.isArray(data)) {
     return <List data={data} path={path} level={level} />;

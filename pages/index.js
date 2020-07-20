@@ -5,7 +5,7 @@ export default function Index() {
     <div>
       <h1>D&amp;D 5th Edition API Explorer</h1>
       <p>
-        <Link href="/[...path]" as="/api">
+        <Link href="/explore">
           <a>
             <span>Explore!</span>
           </a>
