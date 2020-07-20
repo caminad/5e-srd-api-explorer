@@ -1,33 +1,34 @@
+import { useRouter } from 'next/dist/client/router';
 import Head from 'next/head';
 import Link from 'next/link';
-import { Fragment } from 'react';
 import 'tailwindcss/dist/base.css';
 import 'tailwindcss/dist/components.css';
 
-function Nav({ path = [] }) {
+function Nav({ path }) {
+  const { pathname } = useRouter();
+
   return (
     <nav>
       <Link href="/">
-        <a>home</a>
+        <a aria-current={pathname === '/' ? 'page' : undefined}>home</a>
       </Link>
-
-      <span> / </span>
 
       <Link href="/explore">
-        <a>explore</a>
+        <a aria-current={pathname === '/explore' ? 'page' : undefined}>
+          explore
+        </a>
       </Link>
 
-      {path.map((part, i) => (
-        <Fragment key={`${i}-${part}`}>
-          <span> / </span>
-
-          <Link
-            href="/explore/[...path]"
-            as={[`/explore`, ...path.slice(0, i + 1)].join(`/`)}
-          >
-            <a>{part}</a>
-          </Link>
-        </Fragment>
+      {path?.map((part, i) => (
+        <Link
+          key={`${i}-${part}`}
+          href="/explore/[...path]"
+          as={[`/explore`, ...path.slice(0, i + 1)].join(`/`)}
+        >
+          <a aria-current={i === path.length - 1 ? 'page' : undefined}>
+            {part}
+          </a>
+        </Link>
       ))}
 
       <style jsx>{`
@@ -35,11 +36,12 @@ function Nav({ path = [] }) {
           font-size: 1.25rem;
           margin-bottom: 1.5rem;
         }
-        span {
+        a:not([aria-current]):not(:hover):not(:focus) {
           color: lightgray;
         }
-        a:hover {
-          text-decoration: underline;
+        a + a::before {
+          content: ' / ';
+          color: lightgray;
         }
       `}</style>
     </nav>
