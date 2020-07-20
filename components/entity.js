@@ -35,7 +35,6 @@ function Category({ data, path, level }) {
         }
         li:not(:last-child) {
           padding-bottom: 0.5rem;
-          border-bottom: 1px solid lightgray;
         }
       `}</style>
     </ul>
@@ -64,7 +63,6 @@ function List({ data: items, path, level }) {
         }
         li:not(:last-child) {
           padding-bottom: 0.5rem;
-          border-bottom: 1px solid lightgray;
         }
       `}</style>
     </>

@@ -46,11 +46,11 @@ function Footer() {
       </a>
       <style jsx>{`
         footer {
-          margin-top: 4rem;
-          border-top: 1px solid lightgray;
+          margin-top: 2rem;
           padding-top: 2rem;
           padding-bottom: 2rem;
           text-align: center;
+          font-size: 0.875rem;
         }
         a {
           text-decoration: underline;
