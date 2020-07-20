@@ -1,5 +1,7 @@
-import DATA from '../../data/5e.json';
+import Head from 'next/head';
+import { useRouter } from 'next/router';
 import Entity from '../../components/entity';
+import DATA from '../../data/5e.json';
 
 /**
  * @param {unknown} obj
@@ -23,8 +25,19 @@ function titleize(slug) {
   return slug.replace(/-/g, ` `).replace(/\b[a-z]/g, (c) => c.toUpperCase());
 }
 
-/**@param {import('next').GetServerSidePropsContext<{ path: string[] }>} context */
-export async function getServerSideProps(context) {
+export function getStaticPaths() {
+  const paths = [];
+  for (const { _path, ...category } of Object.values(DATA)) {
+    paths.push({ params: { path: _path } });
+    for (const item of Object.values(category)) {
+      paths.push({ params: { path: item._path } });
+    }
+  }
+  return { paths, fallback: true };
+}
+
+/**@param {import('next').GetStaticPropsContext<{ path: string[] }>} context */
+export async function getStaticProps(context) {
   const { path = [] } = context.params;
 
   let data = dig(DATA, path) ?? null;
@@ -45,8 +58,50 @@ export async function getServerSideProps(context) {
   return { props: { path, data } };
 }
 
-/**@param {import('next').InferGetServerSidePropsType<typeof getServerSideProps>} props */
+/**@param {import('next').InferGetStaticPropsType<typeof getStaticProps>} props */
 export default function CatchallPage({ path, data }) {
+  const { isFallback } = useRouter();
+
+  if (isFallback) {
+    return (
+      <>
+        <p>Loading...</p>
+
+        <style jsx>{`
+          p {
+            margin: auto;
+            text-align: center;
+            color: lightgray;
+            font-style: italic;
+            font-size: 1.25rem;
+          }
+        `}</style>
+      </>
+    );
+  }
+
+  if (!data) {
+    return (
+      <>
+        <Head>
+          <title>Not Found</title>
+          <meta name="robots" content="noindex" />
+        </Head>
+
+        <p>Not Found.</p>
+
+        <style jsx>{`
+          p {
+            margin: auto;
+            text-align: center;
+            font-weight: 700;
+            font-size: 1.25rem;
+          }
+        `}</style>
+      </>
+    );
+  }
+
   return (
     <main className="container">
       <Entity data={data} path={path} />

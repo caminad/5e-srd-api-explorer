@@ -1,18 +1,6 @@
 import NextLink from 'next/link';
 import { Fragment } from 'react';
 
-function NotFound() {
-  return (
-    <p>
-      Not Found.
-      <style jsx>{`
-        text-align: center;
-        font-weight: 700;
-      `}</style>
-    </p>
-  );
-}
-
 /**@param {{ data: object, path: string[], level: number }} props */
 function Category({ data, path, level }) {
   return (
@@ -195,9 +183,7 @@ function Value({ data }) {
  * @param {{ data: unknown, path: string[], level?: number }} props
  */
 export default function Entity({ data, path, level = 0 }) {
-  if (data === null) {
-    return <NotFound />;
-  } else if (path.length < 2) {
+  if (path.length < 2) {
     return <Category data={data} path={path} level={level} />;
   } else if (Array.isArray(data)) {
     return <List data={data} path={path} level={level} />;
