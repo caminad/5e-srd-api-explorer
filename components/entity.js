@@ -51,6 +51,25 @@ function List({ data: items, path }) {
 
 /**@param {{ data: object, path: string[] }} props */
 function Record({ data: allData, path }) {
+  switch (Object.keys(allData).join()) {
+    case `item,quantity`:
+      return (
+        <p>
+          <span>{allData.quantity}</span>
+          <Record data={allData.item} path={path} />
+
+          <style jsx>{`
+            p {
+              display: flex;
+            }
+            span {
+              margin-right: 0.5rem;
+            }
+          `}</style>
+        </p>
+      );
+  }
+
   const { name, description, _path, ...data } = allData;
 
   const title =
