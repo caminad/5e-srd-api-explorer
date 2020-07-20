@@ -45,6 +45,13 @@ async function run() {
 }
 
 /**
+ * @param {string} title
+ */
+function slugify(title) {
+  return title.toLowerCase().replace(/ /g, `-`);
+}
+
+/**
  * Modifies source JSON for consistency during parsing.
  * @this {Record<string, unknown>}
  * @param {string} key
@@ -69,6 +76,15 @@ function reviver(key, value) {
         // Ensure that description-like values are strings.
         value = value.join(`\n`);
       }
+
+    case `class`:
+      if (typeof value === `string`) {
+        // Replace string names with references.
+        value = {
+          _path: [`classes`, slugify(value)],
+          name: value,
+        };
+      }
   }
 
   if (!value) {
@@ -88,7 +104,7 @@ function reviver(key, value) {
       typeof this.name === `string`
     ) {
       // Re-write URLs using numeric IDs to use slugs.
-      path[path.length - 1] = this.name.toLowerCase().replace(/ /g, `-`);
+      path[path.length - 1] = slugify(this.name);
     }
     this._path = path;
     return /* drop replaced */;
