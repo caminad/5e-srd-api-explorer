@@ -1,18 +1,14 @@
 import NextLink from 'next/link';
 import { Fragment } from 'react';
 
-/**@param {{ data: object, path: string[], level: number }} props */
-function Category({ data, path, level }) {
+/**@param {{ data: object, path: string[] }} props */
+function Category({ data, path }) {
   return (
     <ul>
       {Object.entries(data).map(([key, { _path, name, description }]) => {
         return (
           <li key={key}>
-            <Record
-              data={{ _path, name, description }}
-              path={[...path, key]}
-              level={level + 1}
-            />
+            <Record data={{ _path, name, description }} path={[...path, key]} />
           </li>
         );
       })}
@@ -29,18 +25,14 @@ function Category({ data, path, level }) {
   );
 }
 
-/**@param {{ data: unknown[], path: string[], level: number }} props */
-function List({ data: items, path, level }) {
+/**@param {{ data: unknown[], path: string[] }} props */
+function List({ data: items, path }) {
   return (
     <>
       <ul>
         {items.map((item, key) => (
           <li key={key}>
-            <Entity
-              data={item}
-              path={[...path, String(key)]}
-              level={level + 1}
-            />
+            <Entity data={item} path={[...path, String(key)]} />
           </li>
         ))}
       </ul>
@@ -57,8 +49,8 @@ function List({ data: items, path, level }) {
   );
 }
 
-/**@param {{ data: object, path: string[], level: number }} props */
-function Record({ data: allData, path, level }) {
+/**@param {{ data: object, path: string[] }} props */
+function Record({ data: allData, path }) {
   const { name, description, _path, ...data } = allData;
 
   const title =
@@ -106,7 +98,7 @@ function Record({ data: allData, path, level }) {
               </dt>
 
               <dd>
-                <Entity data={value} path={[...path, key]} level={level + 1} />
+                <Entity data={value} path={[...path, key]} />
               </dd>
             </Fragment>
           ))}
@@ -180,15 +172,15 @@ function Value({ data }) {
 }
 
 /**
- * @param {{ data: unknown, path: string[], level?: number }} props
+ * @param {{ data: unknown, path: string[] }} props
  */
-export default function Entity({ data, path, level = 0 }) {
+export default function Entity({ data, path }) {
   if (path.length < 2) {
-    return <Category data={data} path={path} level={level} />;
+    return <Category data={data} path={path} />;
   } else if (Array.isArray(data)) {
-    return <List data={data} path={path} level={level} />;
+    return <List data={data} path={path} />;
   } else if (typeof data === 'object') {
-    return <Record data={data} path={path} level={level} />;
+    return <Record data={data} path={path} />;
   } else {
     return <Value data={data} />;
   }
