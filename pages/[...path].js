@@ -1,36 +1,48 @@
 import DATA from '../data/5e.json';
 import Entity from '../components/entity';
 
-/**@typedef {{ path: string[], data: unknown }} Props */
+/**
+ * @param {unknown} obj
+ * @param {string[]} keys
+ */
+function dig(obj, keys) {
+  for (const key of keys) {
+    if (typeof obj === `object` && obj !== null && obj.hasOwnProperty(key)) {
+      obj = obj[key];
+    } else {
+      return undefined;
+    }
+  }
+  return obj;
+}
 
-/**@type {import('next').GetServerSideProps<Props, { path: string[] }>} */
+/**
+ * @param {string} slug
+ */
+function titleize(slug) {
+  return slug.replace(/-/g, ` `).replace(/\b[a-z]/g, (c) => c.toUpperCase());
+}
+
+/**@param {import('next').GetServerSidePropsContext<{ path: string[] }>} context */
 export async function getServerSideProps(context) {
   const { path } = context.params;
 
-  /**@type {unknown} */
-  let data = DATA;
-  for (const index of path) {
-    data = data?.[index] ?? { error: 'Not Found' };
-  }
+  let data = dig(DATA, path) ?? null;
 
-  // Don’t send all of the data down if an index is requested.
-  if (path.length < 3) {
-    const shallow = {};
-    for (const [key, value] of Object.entries(data)) {
+  if (typeof data === `object` && data !== null && path.length < 3) {
+    // Don’t send all of the data down if an index is requested.
+    data = Object.entries(data).reduce((shallow, [key, value]) => {
       shallow[key] = {
-        name:
-          value.name ??
-          key.replace(/-/g, ` `).replace(/\b[a-z]/g, (c) => c.toUpperCase()),
-        description: value.description || null,
+        name: value.name ?? titleize(key),
+        description: value.description ?? null,
       };
-    }
-    data = shallow;
+      return shallow;
+    }, {});
   }
-
   return { props: { path, data } };
 }
 
-/**@param {Props} props */
+/**@param {import('next').InferGetServerSidePropsType<typeof getServerSideProps>} props */
 export default function CatchallPage({ path, data }) {
   return (
     <main className="container">

@@ -1,6 +1,18 @@
 import NextLink from 'next/link';
 import { Fragment } from 'react';
 
+function NotFound() {
+  return (
+    <p>
+      Not Found.
+      <style jsx>{`
+        text-align: center;
+        font-weight: 700;
+      `}</style>
+    </p>
+  );
+}
+
 /**@param {{ data: object, path: string[], level: number }} props */
 function Category({ data, path, level }) {
   return (
@@ -69,7 +81,8 @@ function Record({ data: allData, path, level }) {
     data.class?.name ||
     data.class ||
     data.damage_type?.name ||
-    data.dc_type?.name;
+    data.dc_type?.name ||
+    href.slice(href.lastIndexOf(`/`) + 1).replace(/-/g, ` `);
 
   const entries = Object.entries(data);
 
@@ -90,7 +103,7 @@ function Record({ data: allData, path, level }) {
         <dl>
           {entries.map(([key, value]) => (
             <Fragment key={key}>
-              <dt className={key === 'error' ? 'error' : undefined}>
+              <dt>
                 {typeof value === `object` ? (
                   <NextLink href="/[...path]" as={`${url}/${key}`}>
                     <a>{key}</a>
@@ -101,7 +114,7 @@ function Record({ data: allData, path, level }) {
                 :
               </dt>
 
-              <dd className={key === 'error' ? 'error' : undefined}>
+              <dd>
                 <Entity data={value} path={[...path, key]} level={level + 1} />
               </dd>
             </Fragment>
@@ -150,9 +163,6 @@ function Record({ data: allData, path, level }) {
             margin-top: 0;
           }
         }
-        .error {
-          color: crimson;
-        }
       `}</style>
     </>
   );
@@ -182,7 +192,9 @@ function Value({ data }) {
  * @param {{ data: unknown, path: string[], level?: number }} props
  */
 export default function Entity({ data, path, level = 0 }) {
-  if (path.length < 3) {
+  if (data === null) {
+    return <NotFound />;
+  } else if (path.length < 3) {
     return <Category data={data} path={path} level={level} />;
   } else if (Array.isArray(data)) {
     return <List data={data} path={path} level={level} />;
