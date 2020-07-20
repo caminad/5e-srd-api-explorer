@@ -89,10 +89,10 @@ function Record({ data: allData, path }) {
                     href="/explore/[...path]"
                     as={`/explore/${value._path.join(`/`)}`}
                   >
-                    <a>{key}</a>
+                    <a>{key.replace(/_/g, ` `)}</a>
                   </NextLink>
                 ) : (
-                  key
+                  key.replace(/_/g, ` `)
                 )}
                 :
               </dt>
