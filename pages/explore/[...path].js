@@ -25,15 +25,14 @@ function titleize(slug) {
   return slug.replace(/_/g, ` `).replace(/\b[a-z]/g, (c) => c.toUpperCase());
 }
 
-export function getStaticPaths() {
-  const paths = [];
-  for (const { _path, ...category } of Object.values(DATA)) {
-    paths.push({ params: { path: _path } });
-    for (const item of Object.values(category)) {
-      paths.push({ params: { path: item._path } });
-    }
-  }
-  return { paths, fallback: true };
+/**@type {import('next').GetStaticPaths<{ path: string[] }>} */
+export async function getStaticPaths() {
+  return {
+    paths: Object.values(DATA).map(({ _path }) => ({
+      params: { path: _path },
+    })),
+    fallback: true,
+  };
 }
 
 /**@param {import('next').GetStaticPropsContext<{ path: string[] }>} context */
