@@ -84,6 +84,12 @@ function Record({ data: { name, description, _path, ...data }, path }) {
           `}</style>
         </div>
       );
+    case `dice_count,dice_value`:
+      return (
+        <div>
+          {data.dice_count}d{data.dice_value}
+        </div>
+      );
     case `quantity,unit`:
       return (
         <div>

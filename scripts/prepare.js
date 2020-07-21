@@ -64,6 +64,11 @@ function reviver(key, value) {
     case `class_levels`:
       return /* drop unused */;
 
+    case `class_specific`:
+      // Extra class-specific level data can just be merged with the rest of the level data.
+      Object.assign(this, value);
+      return /* drop merged */;
+
     case `desc`:
       // Rename key and make it a string for consistency.
       if (Array.isArray(value)) {
