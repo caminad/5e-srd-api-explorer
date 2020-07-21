@@ -48,7 +48,7 @@ async function run() {
  * @param {string} title
  */
 function slugify(title) {
-  return title.toLowerCase().replace(/ /g, `-`);
+  return title.toLowerCase().replace(/\W/g, `_`);
 }
 
 /**
@@ -65,22 +65,26 @@ function reviver(key, value) {
       return /* drop unused */;
 
     case `desc`:
-      // Rename key.
-      this.description = reviver(`description`, value);
+      // Rename key and make it a string for consistency.
+      if (Array.isArray(value)) {
+        value = value.join(`\n`);
+      }
+      this.description = value;
       return /* drop replaced */;
 
     case `description`:
     case `higher_level`:
     case `special`:
+      // Ensure that description-like values are strings.
       if (Array.isArray(value)) {
-        // Ensure that description-like values are strings.
         value = value.join(`\n`);
       }
+      return value;
 
     case `class`:
       if (typeof value === `string`) {
         // Replace string names with references.
-        value = {
+        return {
           _path: [`classes`, slugify(value)],
           name: value,
         };
@@ -99,6 +103,8 @@ function reviver(key, value) {
     // Sorce uses a variety of keys for references, this makes sure that they’re all caught.
     let path = value.split(`/`);
     path = path.slice(path.indexOf(`api`) + 1);
+    // Slugify consistently to allow paths to be JSON keys.
+    path = path.map(slugify);
     if (
       Number.isInteger(Number(path[path.length - 1])) &&
       typeof this.name === `string`
@@ -122,19 +128,34 @@ function reviver(key, value) {
  */
 function replacer(key, value) {
   if (key === '' /* top level */) {
-    // Expand top level array of entities into nested routes.
     const entities = /**@type {Entity[]} */ (value);
 
+    // First pass to fix entities in isolation.
+    for (const entity of entities) {
+      if ([`starting_equipment`, `spellcasting`].includes(entity._path[0])) {
+        // Place exclusively class-related categories within their class.
+        entity._path = /**@type Entity */ (entity.class)._path.concat(
+          entity._path[0]
+        );
+        delete entity.class;
+      } else if (entity._path[0] === `classes` && entity._path.length === 2) {
+        // Delete the corresponding links on classes.
+        delete entity.starting_equipment;
+        delete entity.spellcasting;
+      }
+    }
+
+    // Second pass to merge entities.
     value = {};
     for (const entity of entities) {
       let index = value;
-      for (const [i, segment] of entity._path.slice(0, -1).entries()) {
+      for (const [i, segment] of entity._path.entries()) {
         if (index[segment] === undefined) {
           index[segment] = { _path: entity._path.slice(0, i + 1) }; // create a new index
         }
         index = index[segment]; // descend
       }
-      index[entity._path[entity._path.length - 1]] = entity;
+      Object.assign(index, entity);
     }
   } else if (
     typeof value === 'object' &&
