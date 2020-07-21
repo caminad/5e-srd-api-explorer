@@ -54,19 +54,19 @@ function Record({ data: allData, path }) {
   switch (Object.keys(allData).join()) {
     case `item,quantity`:
       return (
-        <p>
+        <div>
           <span>{allData.quantity}</span>
           <Record data={allData.item} path={path} />
 
           <style jsx>{`
-            p {
+            div {
               display: flex;
             }
             span {
               margin-right: 0.5rem;
             }
           `}</style>
-        </p>
+        </div>
       );
   }
 
