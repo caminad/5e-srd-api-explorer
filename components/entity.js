@@ -50,13 +50,13 @@ function List({ data: items, path }) {
 }
 
 /**@param {{ data: object, path: string[] }} props */
-function Record({ data: allData, path }) {
-  switch (Object.keys(allData).join()) {
+function Record({ data: { name, description, _path, ...data }, path }) {
+  switch (Object.keys(data).join()) {
     case `item,quantity`:
       return (
         <div>
-          <span>{allData.quantity}</span>
-          <Record data={allData.item} path={path} />
+          <span>{data.quantity}</span>
+          <Record data={data.item} path={path} />
 
           <style jsx>{`
             div {
@@ -68,29 +68,51 @@ function Record({ data: allData, path }) {
           `}</style>
         </div>
       );
+    case `damage_dice,damage_type`:
+      return (
+        <div>
+          <span>{data.damage_dice}</span>
+          <Record data={data.damage_type} path={path} />
+
+          <style jsx>{`
+            div {
+              display: flex;
+            }
+            span {
+              margin-right: 0.5rem;
+            }
+          `}</style>
+        </div>
+      );
+    case `quantity,unit`:
+      return (
+        <div>
+          <span>{data.quantity}</span>
+          <i>{data.unit}</i>
+
+          <style jsx>{`
+            div {
+              display: flex;
+            }
+            span {
+              margin-right: 0.25rem;
+            }
+          `}</style>
+        </div>
+      );
   }
-
-  const { name, description, _path, ...data } = allData;
-
-  const title =
-    name ||
-    data.class?.name ||
-    data.class ||
-    data.damage_type?.name ||
-    data.dc_type?.name ||
-    _path?.[_path.length - 1].replace(/-/g, ` `);
 
   const entries = Object.entries(data);
 
   return (
     <>
-      {title && (
+      {name && (
         <NextLink
           href="/explore/[...path]"
           as={[`/explore`, ...(_path || path)].join(`/`)}
         >
           <a>
-            <h3>{title}</h3>
+            <h3>{name}</h3>
             {description?.split(`\n`).map((paragraph, i) => (
               <p key={i}>{paragraph}</p>
             ))}

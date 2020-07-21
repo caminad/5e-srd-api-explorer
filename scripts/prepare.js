@@ -11,7 +11,7 @@ run().catch((error) => {
 });
 
 /**
- * @typedef {{ _path: string[], [key: string]: unknown }} Entity
+ * @typedef {{ _path: string[], class?: Entity, [key: string]: unknown }} Entity
  */
 
 async function run() {
@@ -132,16 +132,31 @@ function replacer(key, value) {
 
     // First pass to fix entities in isolation.
     for (const entity of entities) {
-      if ([`starting_equipment`, `spellcasting`].includes(entity._path[0])) {
-        // Place exclusively class-related categories within their class.
-        entity._path = /**@type Entity */ (entity.class)._path.concat(
-          entity._path[0]
-        );
-        delete entity.class;
-      } else if (entity._path[0] === `classes` && entity._path.length === 2) {
-        // Delete the corresponding links on classes.
-        delete entity.starting_equipment;
-        delete entity.spellcasting;
+      switch (entity._path[0]) {
+        case `starting_equipment`:
+        case `spellcasting`:
+          // Place exclusively class-related categories within their class.
+          entity._path = entity.class._path.concat(entity._path[0]);
+          delete entity.class;
+          break;
+
+        case `classes`:
+          switch (entity._path[2]) {
+            case undefined:
+              // Delete the corresponding links on classes.
+              delete entity.starting_equipment;
+              delete entity.spellcasting;
+              break;
+
+            case `levels`:
+              switch (entity._path.length) {
+                case 4:
+                  // Simplify level and class into a name.
+                  entity.name = `${entity.class.name} Level ${entity.level}`;
+                  delete entity.class;
+                  delete entity.level;
+              }
+          }
       }
     }
 
