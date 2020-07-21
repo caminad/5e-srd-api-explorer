@@ -22,7 +22,7 @@ function dig(obj, keys) {
  * @param {string} slug
  */
 function titleize(slug) {
-  return slug.replace(/-/g, ` `).replace(/\b[a-z]/g, (c) => c.toUpperCase());
+  return slug.replace(/_/g, ` `).replace(/\b[a-z]/g, (c) => c.toUpperCase());
 }
 
 export function getStaticPaths() {

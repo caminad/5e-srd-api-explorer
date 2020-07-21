@@ -26,7 +26,7 @@ function Nav({ path }) {
           as={[`/explore`, ...path.slice(0, i + 1)].join(`/`)}
         >
           <a aria-current={i === path.length - 1 ? 'page' : undefined}>
-            {part}
+            {part.replace(/_/g, ` `)}
           </a>
         </Link>
       ))}
