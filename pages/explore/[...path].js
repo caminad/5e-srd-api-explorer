@@ -1,7 +1,7 @@
-import Head from 'next/head';
 import { useRouter } from 'next/router';
 import Entity from '../../components/entity';
 import DATA from '../../data/5e.json';
+import PageNotFound from '../404';
 
 /**
  * @param {unknown} obj
@@ -80,25 +80,7 @@ export default function CatchallPage({ path, data }) {
   }
 
   if (!data) {
-    return (
-      <>
-        <Head>
-          <title>Not Found</title>
-          <meta name="robots" content="noindex" />
-        </Head>
-
-        <p>Not Found.</p>
-
-        <style jsx>{`
-          p {
-            margin: auto;
-            text-align: center;
-            font-weight: 700;
-            font-size: 1.25rem;
-          }
-        `}</style>
-      </>
-    );
+    return <PageNotFound />;
   }
 
   return (
