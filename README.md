@@ -1,6 +1,6 @@
-# D&D 5th Edition SRD API Explorer
+# D&D 5th Edition SRD Data Explorer
 
-Speedy statically rendered D&D data explorer. Uses [bagelbits/5e-database](https://github.com/bagelbits/5e-database) as a data source.
+Uses [bagelbits/5e-database](https://github.com/bagelbits/5e-database) as a data source.
 
 ## Getting Started
 

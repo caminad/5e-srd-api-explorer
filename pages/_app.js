@@ -52,7 +52,15 @@ function Nav({ path }) {
 function Footer() {
   return (
     <footer className="mt-8 pt-8 pb-2 text-center text-sm">
-      Made by <a href="https://twitter.com/kitibyte">David Jones</a> using the{' '}
+      © 2020{' '}
+      <a
+        className="underline whitespace-no-wrap"
+        href="https://twitter.com/kitibyte"
+      >
+        David Jones
+      </a>
+      {' · '}
+      uses the{' '}
       <a
         className="underline whitespace-no-wrap"
         href="https://github.com/bagelbits/5e-database/"
@@ -64,7 +72,7 @@ function Footer() {
         className="underline whitespace-no-wrap"
         href="https://github.com/kitibyte/5e-srd-api-explorer"
       >
-        github.com/kitibyte/5e-srd-api-explorer
+        source
       </a>
     </footer>
   );
@@ -75,7 +83,7 @@ export default function App({ Component, pageProps }) {
   return (
     <div className="m-auto p-2 min-h-screen grid grid-rows-layout text-gray-900 bg-white">
       <Head>
-        <title>D&amp;D 5th Edition API Explorer</title>
+        <title>D&amp;D 5th Edition Data Explorer</title>
       </Head>
 
       <Nav {...pageProps} />
