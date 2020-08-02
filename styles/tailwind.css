@@ -8,4 +8,4 @@ html {
 
 @tailwind components;
 
-/* @tailwind utilities; */
+@tailwind utilities;

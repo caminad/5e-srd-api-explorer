@@ -63,19 +63,7 @@ export default function CatchallPage({ path, data }) {
 
   if (isFallback) {
     return (
-      <>
-        <p>Loading...</p>
-
-        <style jsx>{`
-          p {
-            margin: auto;
-            text-align: center;
-            color: lightgray;
-            font-style: italic;
-            font-size: 1.25rem;
-          }
-        `}</style>
-      </>
+      <p className="m-auto text-center opacity-50 italic text-xl">Loading...</p>
     );
   }
 
@@ -84,14 +72,8 @@ export default function CatchallPage({ path, data }) {
   }
 
   return (
-    <main className="container">
+    <main className="container m-auto">
       <Entity data={data} path={path} />
-
-      <style jsx>{`
-        main {
-          margin: auto;
-        }
-      `}</style>
     </main>
   );
 }

@@ -8,16 +8,7 @@ export default function PageNotFound() {
         <meta name="robots" content="noindex" />
       </Head>
 
-      <p>Not Found.</p>
-
-      <style jsx>{`
-        p {
-          margin: auto;
-          text-align: center;
-          font-weight: 700;
-          font-size: 1.25rem;
-        }
-      `}</style>
+      <p className="m-auto text-center font-bold text-xl">Not Found.</p>
     </>
   );
 }

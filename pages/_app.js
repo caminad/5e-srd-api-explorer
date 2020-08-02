@@ -3,74 +3,69 @@ import Head from 'next/head';
 import Link from 'next/link';
 import '../styles/tailwind.css';
 
-function Nav({ path }) {
-  const { pathname } = useRouter();
+/**
+ * @param {object} props
+ * @param {string} props.href
+ * @param {string} [props.as]
+ * @param {React.ReactNode} props.children
+ */
+function NavLink({ href, as, children }) {
+  const { asPath } = useRouter();
 
   return (
-    <nav>
-      <Link href="/">
-        <a aria-current={pathname === '/' ? 'page' : undefined}>home</a>
+    <>
+      <span className="opacity-50">/</span>
+      <Link href={href} as={as}>
+        {(as ?? href) === asPath ? (
+          <a className="px-1" aria-current="page">
+            {children}
+          </a>
+        ) : (
+          <a className="px-1 opacity-50 transition-opacity duration-75 hover:opacity-100 focus:opacity-100">
+            {children}
+          </a>
+        )}
       </Link>
+    </>
+  );
+}
 
-      <Link href="/explore">
-        <a aria-current={pathname === '/explore' ? 'page' : undefined}>
-          explore
-        </a>
-      </Link>
+function Nav({ path }) {
+  return (
+    <nav className="mb-6 text-xl">
+      <NavLink href="/">home</NavLink>
+      <NavLink href="/explore">explore</NavLink>
 
       {path?.map((part, i) => (
-        <Link
+        <NavLink
           key={`${i}-${part}`}
           href="/explore/[...path]"
           as={[`/explore`, ...path.slice(0, i + 1)].join(`/`)}
         >
-          <a aria-current={i === path.length - 1 ? 'page' : undefined}>
-            {part.replace(/_/g, ` `)}
-          </a>
-        </Link>
+          {part.replace(/_/g, ` `)}
+        </NavLink>
       ))}
-
-      <style jsx>{`
-        nav {
-          font-size: 1.25rem;
-          margin-bottom: 1.5rem;
-        }
-        a:not([aria-current]):not(:hover):not(:focus) {
-          color: lightgray;
-        }
-        a + a::before {
-          content: ' / ';
-          color: lightgray;
-        }
-      `}</style>
     </nav>
   );
 }
 
 function Footer() {
   return (
-    <footer>
+    <footer className="mt-8 pt-8 pb-2 text-center text-sm">
       Made by <a href="https://twitter.com/kitibyte">David Jones</a> using the{' '}
-      <a href="https://github.com/bagelbits/5e-database/">
+      <a
+        className="underline whitespace-no-wrap"
+        href="https://github.com/bagelbits/5e-database/"
+      >
         D&amp;D 5th Edition API Database
       </a>
       {' · '}
-      <a href="https://github.com/kitibyte/5e-srd-api-explorer">
+      <a
+        className="underline whitespace-no-wrap"
+        href="https://github.com/kitibyte/5e-srd-api-explorer"
+      >
         github.com/kitibyte/5e-srd-api-explorer
       </a>
-      <style jsx>{`
-        footer {
-          margin-top: 2rem;
-          padding-top: 2rem;
-          padding-bottom: 2rem;
-          text-align: center;
-          font-size: 0.875rem;
-        }
-        a {
-          text-decoration: underline;
-          white-space: nowrap;
-        }
-      `}</style>
     </footer>
   );
 }
@@ -78,7 +73,7 @@ function Footer() {
 /**@param {import('next/app').AppProps} props */
 export default function App({ Component, pageProps }) {
   return (
-    <div>
+    <div className="m-auto p-2 min-h-screen grid grid-rows-layout text-gray-900 bg-white">
       <Head>
         <title>D&amp;D 5th Edition API Explorer</title>
       </Head>
@@ -88,18 +83,6 @@ export default function App({ Component, pageProps }) {
       <Component {...pageProps} />
 
       <Footer />
-
-      <style jsx>{`
-        div {
-          margin: auto;
-          padding: 0.5rem;
-          min-height: 100vh;
-          display: grid;
-          grid-template-rows: min-content auto min-content;
-          color: rgb(46, 52, 54);
-          background: white;
-        }
-      `}</style>
     </div>
   );
 }
