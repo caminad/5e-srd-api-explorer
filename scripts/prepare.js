@@ -34,12 +34,14 @@ async function run() {
         .filter((entry) => !entry.name.includes(`Test`))
         .map(async (entry) => {
           const res = await fetch(entry.download_url);
-          return JSON.parse(await res.text(), reviver);
+          return res.json();
         })
     ))
   );
 
-  const json = JSON.stringify(entities, replacer, 2);
+  const combined = combineEntities(entities);
+
+  const json = JSON.stringify(combined, undefined, 2);
   await fs.mkdir(`./data`, { recursive: true });
   await fs.writeFile(`./data/5e.json`, json);
 }
@@ -52,145 +54,220 @@ function slugify(title) {
 }
 
 /**
- * Modifies source JSON for consistency during parsing.
- * @this {Record<string, unknown>}
- * @param {string} key
- * @param {unknown} value
- * @returns {unknown}
+ * @param {Entity[]} entities
+ * @returns {Record<string, Entity>}
  */
-function reviver(key, value) {
-  switch (key) {
-    case `index`:
-    case `class_levels`:
-      return /* drop unused */;
+function combineEntities(entities) {
+  for (const child of nestedChildren(entities)) {
+    // Drop unused properties.
+    delete child.index;
+    delete child.class_levels;
 
-    case `class_specific`:
-      // Extra class-specific level data can just be merged with the rest of the level data.
-      Object.assign(this, value);
-      return /* drop merged */;
+    renameProperty(child, 'desc', 'description');
 
-    case `desc`:
-      // Rename key and make it a string for consistency.
-      if (Array.isArray(value)) {
-        value = value.join(`\n`);
-      }
-      this.description = value;
-      return /* drop replaced */;
+    joinProperty(child, 'description', '\n');
+    joinProperty(child, 'higher_level', '\n');
+    joinProperty(child, 'special', '\n');
 
-    case `description`:
-    case `higher_level`:
-    case `special`:
-      // Ensure that description-like values are strings.
-      if (Array.isArray(value)) {
-        value = value.join(`\n`);
-      }
-      return value;
+    // Extra class-specific level data can just be merged with the rest of the level data.
+    mergePropertyDown(child, 'class_specific');
 
-    case `class`:
-      if (typeof value === `string`) {
-        // Replace string names with references.
-        return {
-          _path: [`classes`, slugify(value)],
-          name: value,
-        };
-      }
+    dropFalsyProperties(child);
+    dropEmptyProperties(child);
+
+    replaceLinkWithPath(child);
+    replaceStringPropertyWithPath(child, 'class', ['classes']);
   }
 
-  if (!value) {
-    return /* drop falsy */;
-  } else if (typeof value === `object` && Object.keys(value).length === 0) {
-    return /* drop empty */;
-  } else if (
-    typeof value === `string` &&
-    (value.startsWith(`/api/`) ||
-      value.startsWith(`http://www.dnd5eapi.co/api/`))
-  ) {
-    // Sorce uses a variety of keys for references, this makes sure that they’re all caught.
-    let path = value.split(`/`);
-    path = path.slice(path.indexOf(`api`) + 1);
-    // Slugify consistently to allow paths to be JSON keys.
-    path = path.map(slugify);
-    if (
-      Number.isInteger(Number(path[path.length - 1])) &&
-      typeof this.name === `string`
-    ) {
-      // Re-write URLs using numeric IDs to use slugs.
-      path[path.length - 1] = slugify(this.name);
+  /**
+   * @type {Record<string, Entity>}
+   */
+  const result = {};
+
+  for (const entity of entities) {
+    fixUpPath(entity);
+
+    /**
+     * @type {unknown}
+     */
+    let index = result;
+    for (const [i, segment] of entity._path.entries()) {
+      if (index[segment] === undefined) {
+        index[segment] = { _path: entity._path.slice(0, i + 1) }; // create a new index
+      }
+      index = index[segment]; // descend
     }
-    this._path = path;
-    return /* drop replaced */;
-  } else {
-    return value;
+    Object.assign(index, entity);
+  }
+
+  for (const child of nestedChildren(result)) {
+    sortObject(child, numericCollator.compare);
+  }
+
+  return result;
+}
+
+/**
+ * @param {Record<string, unknown>} obj
+ * @param {string} key
+ */
+function mergePropertyDown(obj, key) {
+  if (key in obj) {
+    Object.assign(obj, obj[key]);
+    delete obj[key];
   }
 }
 
 /**
- * Expands source entities into nested indices during serialization.
- * @this {Record<string, unknown>}
+ * @param {Record<string, unknown>} obj
  * @param {string} key
- * @param {unknown} value
- * @returns {unknown}
+ * @param {string} newKey
  */
-function replacer(key, value) {
-  if (key === '' /* top level */) {
-    const entities = /**@type {Entity[]} */ (value);
+function renameProperty(obj, key, newKey) {
+  if (key in obj) {
+    obj[newKey] = obj[key];
+    delete obj[key];
+  }
+}
 
-    // First pass to fix entities in isolation.
-    for (const entity of entities) {
-      switch (entity._path[0]) {
-        case `starting_equipment`:
-        case `spellcasting`:
-          // Place exclusively class-related categories within their class.
-          entity._path = entity.class._path.concat(entity._path[0]);
-          delete entity.class;
-          break;
+/**
+ * @param {Record<string, unknown>} obj
+ * @param {string} key
+ * @param {string} separator
+ */
+function joinProperty(obj, key, separator) {
+  const value = obj[key];
+  if (Array.isArray(value)) {
+    obj[key] = value.join(separator);
+  }
+}
 
-        case `classes`:
-          switch (entity._path[2]) {
-            case undefined:
-              // Delete the corresponding links on classes.
-              delete entity.starting_equipment;
-              delete entity.spellcasting;
-              break;
-
-            case `levels`:
-              switch (entity._path.length) {
-                case 4:
-                  // Simplify level and class into a name.
-                  entity.name = `${entity.class.name} Level ${entity.level}`;
-                  delete entity.class;
-                  delete entity.level;
-              }
-          }
-      }
-    }
-
-    // Second pass to merge entities.
-    value = {};
-    for (const entity of entities) {
-      let index = value;
-      for (const [i, segment] of entity._path.entries()) {
-        if (index[segment] === undefined) {
-          index[segment] = { _path: entity._path.slice(0, i + 1) }; // create a new index
-        }
-        index = index[segment]; // descend
-      }
-      Object.assign(index, entity);
-    }
-  } else if (
-    typeof value === 'object' &&
-    value !== null &&
-    !Array.isArray(value)
-  ) {
-    // Shallow copy a record and sort keys.
-    const entries = Object.entries(value);
-    entries.sort(([keyA], [keyB]) => numericCollator.compare(keyA, keyB));
-
-    value = {};
-    for (const [key, value_] of entries) {
-      value[key] = value_;
+/**
+ * @param {Record<string, unknown>} obj
+ */
+function dropFalsyProperties(obj) {
+  for (const [key, value] of Object.entries(obj)) {
+    if (!value) {
+      delete obj[key];
     }
   }
+}
 
-  return value;
+/**
+ * @param {Record<string, unknown>} obj
+ */
+function dropEmptyProperties(obj) {
+  for (const [key, value] of Object.entries(obj)) {
+    if (typeof value === `object` && Object.keys(value).length === 0) {
+      delete obj[key];
+    }
+  }
+}
+
+/**
+ * @param {Record<string, unknown>} obj
+ */
+function replaceLinkWithPath(obj) {
+  for (const [key, value] of Object.entries(obj)) {
+    if (
+      typeof value === `string` &&
+      (value.startsWith(`/api/`) ||
+        value.startsWith(`http://www.dnd5eapi.co/api/`))
+    ) {
+      // Sorce uses a variety of keys for references, this makes sure that they’re all caught.
+      let path = value.split(`/`);
+      path = path.slice(path.indexOf(`api`) + 1);
+      // Slugify consistently to allow paths to be JSON keys.
+      path = path.map(slugify);
+      if (
+        Number.isInteger(Number(path[path.length - 1])) &&
+        typeof obj.name === `string`
+      ) {
+        // Re-write URLs using numeric IDs to use slugs.
+        path[path.length - 1] = slugify(obj.name);
+      }
+
+      obj._path = path;
+
+      // Drop replaced.
+      delete obj[key];
+    }
+  }
+}
+
+/**
+ * @param {Record<string, unknown>} obj
+ * @param {string} key
+ * @param {string[]} path
+ */
+function replaceStringPropertyWithPath(obj, key, path) {
+  const value = obj[key];
+  if (typeof value === `string`) {
+    obj[key] = {
+      _path: path.concat(slugify(value)),
+      name: value,
+    };
+  }
+}
+
+/**
+ * @param {Entity} entity
+ */
+function fixUpPath(entity) {
+  switch (entity._path[0]) {
+    case `starting_equipment`:
+    case `spellcasting`:
+      // Place exclusively class-related categories within their class.
+      entity._path = entity.class._path.concat(entity._path[0]);
+      delete entity.class;
+      break;
+
+    case `classes`:
+      switch (entity._path[2]) {
+        case undefined:
+          // Delete the corresponding links on classes.
+          delete entity.starting_equipment;
+          delete entity.spellcasting;
+          break;
+
+        case `levels`:
+          switch (entity._path.length) {
+            case 4:
+              // Simplify level and class into a name.
+              entity.name = `${entity.class.name} Level ${entity.level}`;
+              delete entity.class;
+              delete entity.level;
+          }
+      }
+  }
+}
+
+/**
+ * Yields each nested object within obj, depth first.
+ * Arrays are recursed but not passed to callbackfn.
+ * @param {Record<string, unknown> | unknown[]} obj
+ * @returns {IterableIterator<Record<string, unknown>>}
+ */
+function* nestedChildren(obj) {
+  for (const value of Object.values(obj)) {
+    if (typeof value === 'object' && value !== null) {
+      yield* nestedChildren(/** @type {any} */ (value));
+    }
+  }
+  if (!Array.isArray(obj)) {
+    yield obj;
+  }
+}
+
+/**
+ * Sorts keys of object in place.
+ * @param {Record<string, unknown>} obj
+ * @param {(a: string, b: string) => number} compare
+ */
+function sortObject(obj, compare) {
+  for (const key of Object.keys(obj).sort(compare)) {
+    const value = obj[key];
+    delete obj[key];
+    obj[key] = value;
+  }
 }
