@@ -119,6 +119,6 @@ export default function Entity({ data, path }) {
   } else if (typeof data === 'object') {
     return <Record data={data} path={path} />;
   } else {
-    return <p>{data}</p>;
+    return <p>{String(data)}</p>;
   }
 }
