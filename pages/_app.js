@@ -1,8 +1,7 @@
 import { useRouter } from 'next/dist/client/router';
 import Head from 'next/head';
 import Link from 'next/link';
-import 'tailwindcss/dist/base.css';
-import 'tailwindcss/dist/components.css';
+import '../styles/tailwind.css';
 
 function Nav({ path }) {
   const { pathname } = useRouter();
