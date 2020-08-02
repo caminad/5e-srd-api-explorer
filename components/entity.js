@@ -4,7 +4,7 @@ import { Fragment } from 'react';
 /**@param {{ data: object, path: string[] }} props */
 function Category({ data, path }) {
   return (
-    <ul className="space-y-4">
+    <ul className="space-y-2 sm:space-y-4">
       {Object.entries(data).map(([key, { _path, name, description }]) => {
         return (
           <li key={key}>
@@ -19,7 +19,7 @@ function Category({ data, path }) {
 /**@param {{ data: unknown[], path: string[] }} props */
 function List({ data: items, path }) {
   return (
-    <ul className="space-y-4">
+    <ul className="space-y-2 sm:space-y-4">
       {items.map((item, key) => (
         <li key={key}>
           <Entity data={item} path={[...path, String(key)]} />
@@ -64,13 +64,13 @@ function Record({ data: { name, description, _path, ...data }, path }) {
   const entries = Object.entries(data);
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-2 sm:space-y-4">
       {name && (
         <NextLink
           href="/explore/[...path]"
           as={[`/explore`, ...(_path || path)].join(`/`)}
         >
-          <a className="space-y-4">
+          <a className="space-y-2 sm:space-y-4">
             <h3 className="font-bold hover:underline">{name}</h3>
             {description?.split(`\n`).map((paragraph, i) => (
               <p key={i}>{paragraph}</p>
@@ -97,7 +97,7 @@ function Record({ data: { name, description, _path, ...data }, path }) {
                 :
               </dt>
 
-              <dd className="pl-8 mt-4 sm:pl-0 sm:mt-0 sm:col-start-2 sm:col-span-3 md:col-span-4 lg:col-span-5 xl:col-span-6">
+              <dd className="pl-8 sm:pl-0 sm:col-start-2 sm:col-span-3 md:col-span-4 lg:col-span-5 xl:col-span-6">
                 <Entity data={value} path={[...path, key]} />
               </dd>
             </Fragment>

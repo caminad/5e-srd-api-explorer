@@ -32,7 +32,7 @@ function NavLink({ href, as, children }) {
 
 function Nav({ path }) {
   return (
-    <nav className="mb-6 text-xl">
+    <nav className="mb-6 text-lg sm:text-xl">
       <NavLink href="/">home</NavLink>
       <NavLink href="/explore">explore</NavLink>
 
