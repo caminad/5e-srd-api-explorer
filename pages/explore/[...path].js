@@ -1,28 +1,13 @@
 import { useRouter } from 'next/router';
-import {
-  map,
-  mapObjIndexed,
-  pathOr,
-  pickBy,
-  pipe,
-  replace,
-  startsWith,
-  toUpper,
-  values,
-} from 'ramda';
+import { flip, map, pathOr, pick, pipe, startsWith, values } from 'ramda';
+import { omitBy } from 'ramda-adjunct';
 import Entity from '../../components/entity';
 import DATA from '../../data/5e.json';
 import PageNotFound from '../404';
 
-const titleize = pipe(replace(/_/g, ' '), replace(/\b[a-z]/g, toUpper));
-
 const summarize = pipe(
-  pickBy((_, key) => !startsWith('_', key)),
-  mapObjIndexed(({ _path, name, description }, key) => ({
-    _path: _path,
-    name: name ?? titleize(key),
-    description: description ?? null,
-  }))
+  omitBy(flip(startsWith('_'))),
+  map(pick(['_path', 'name', 'description']))
 );
 
 /**@type {import('next').GetStaticPaths<{ path: string[] }>} */
