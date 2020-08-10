@@ -1,60 +1,49 @@
 import { useRouter } from 'next/router';
+import {
+  map,
+  mapObjIndexed,
+  pathOr,
+  pickBy,
+  pipe,
+  replace,
+  startsWith,
+  toUpper,
+  values,
+} from 'ramda';
 import Entity from '../../components/entity';
 import DATA from '../../data/5e.json';
 import PageNotFound from '../404';
 
-/**
- * @param {unknown} obj
- * @param {string[]} keys
- */
-function dig(obj, keys) {
-  for (const key of keys) {
-    if (typeof obj === `object` && obj !== null && obj.hasOwnProperty(key)) {
-      obj = obj[key];
-    } else {
-      return undefined;
-    }
-  }
-  return obj;
-}
+const titleize = pipe(replace(/_/g, ' '), replace(/\b[a-z]/g, toUpper));
 
-/**
- * @param {string} slug
- */
-function titleize(slug) {
-  return slug.replace(/_/g, ` `).replace(/\b[a-z]/g, (c) => c.toUpperCase());
-}
+const summarize = pipe(
+  pickBy((_, key) => !startsWith('_', key)),
+  mapObjIndexed(({ _path, name, description }, key) => ({
+    _path: _path,
+    name: name ?? titleize(key),
+    description: description ?? null,
+  }))
+);
 
 /**@type {import('next').GetStaticPaths<{ path: string[] }>} */
 export async function getStaticPaths() {
   return {
-    paths: Object.values(DATA).map(({ _path }) => ({
-      params: { path: _path },
-    })),
+    paths: map(({ _path }) => ({ params: { path: _path } }), values(DATA)),
     fallback: true,
   };
 }
 
 /**@param {import('next').GetStaticPropsContext<{ path: string[] }>} context */
 export async function getStaticProps(context) {
-  const { path = [] } = context.params;
+  const { path: _path } = context.params;
 
-  let data = dig(DATA, path) ?? null;
+  let data = pathOr(null, _path, DATA);
 
-  if (typeof data === `object` && data !== null && path.length < 2) {
-    // Don’t send all of the data down if an index is requested.
-    data = Object.entries(data).reduce((shallow, [key, value]) => {
-      if (!key.startsWith(`_`)) {
-        shallow[key] = {
-          _path: value._path,
-          name: value.name ?? titleize(key),
-          description: value.description ?? null,
-        };
-      }
-      return shallow;
-    }, {});
+  if (data && _path.length === 1) {
+    data = summarize(data);
   }
-  return { props: { path, data } };
+
+  return { props: { path: _path, data } };
 }
 
 /**@param {import('next').InferGetStaticPropsType<typeof getStaticProps>} props */
