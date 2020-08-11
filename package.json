@@ -3,7 +3,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "prepare": "node scripts/prepare.js",
+    "fetch-data": "node scripts/fetch-data.js",
     "start": "next start"
   },
   "dependencies": {
