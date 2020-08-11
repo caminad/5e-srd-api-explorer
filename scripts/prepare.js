@@ -85,6 +85,11 @@ function combineEntities(entities) {
   const result = {};
 
   for (const entity of entities) {
+    if (!entity._path) {
+      console.warn('Warning: Rejecting entity without a path:', entity);
+      continue;
+    }
+
     fixUpPath(entity);
 
     /**
