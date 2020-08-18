@@ -27480,6 +27480,29 @@
       "level": 10,
       "name": "Hide in Plain Sight"
     },
+    "holy_nimbus": {
+      "_path": [
+        "features",
+        "holy_nimbus"
+      ],
+      "class": {
+        "_path": [
+          "classes",
+          "paladin"
+        ],
+        "name": "Paladin"
+      },
+      "description": "At 20th level, as an action, you can emanate an aura of sunlight. For 1 minute, bright light shines from you in a 30-foot radius, and dim light shines 30 feet beyond that.\nWhenever an enemy creature starts its turn in the bright light, the creature takes 10 radiant damage.\nIn addition, for the duration, you have advantage on saving throws against spells cast by fiends or undead.",
+      "level": 20,
+      "name": "Holy Nimbus",
+      "subclass": {
+        "_path": [
+          "subclasses",
+          "devotion"
+        ],
+        "name": "Devotion"
+      }
+    },
     "hunters_prey_colossus_slayer": {
       "_path": [
         "features",
@@ -28390,29 +28413,6 @@
           "land"
         ],
         "name": "Land"
-      }
-    },
-    "nimbus": {
-      "_path": [
-        "features",
-        "nimbus"
-      ],
-      "class": {
-        "_path": [
-          "classes",
-          "paladin"
-        ],
-        "name": "Paladin"
-      },
-      "description": "At 20th level, as an action, you can emanate an aura of sunlight. For 1 minute, bright light shines from you in a 30-foot radius, and dim light shines 30 feet beyond that.\nWhenever an enemy creature starts its turn in the bright light, the creature takes 10 radiant damage.\nIn addition, for the duration, you have advantage on saving throws against spells cast by fiends or undead.",
-      "level": 20,
-      "name": "Nimbus",
-      "subclass": {
-        "_path": [
-          "subclasses",
-          "devotion"
-        ],
-        "name": "Devotion"
       }
     },
     "oath_spells": {
@@ -97031,22 +97031,6 @@
         "name": "Barbarian"
       },
       "description": "For some barbarians, rage is a means to an end--that end being violence. The Path of the Berserker is a path of untrammeled fury, slick with blood. As you enter the berserker's rage, you thrill in the chaos of battle, heedless of your own health or well-being.",
-      "features": [
-        {
-          "_path": [
-            "features",
-            "primal_path"
-          ],
-          "name": "Primal Path"
-        },
-        {
-          "_path": [
-            "features",
-            "frenzy"
-          ],
-          "name": "Frenzy"
-        }
-      ],
       "levels": {
         "3": {
           "_path": [
@@ -97063,13 +97047,6 @@
             "name": "Barbarian"
           },
           "features": [
-            {
-              "_path": [
-                "features",
-                "primal_path"
-              ],
-              "name": "Primal Path"
-            },
             {
               "_path": [
                 "features",
@@ -97190,7 +97167,14 @@
         ]
       },
       "name": "Berserker",
-      "subclass_flavor": "Primal Path"
+      "subclass_flavor": "Primal Path",
+      "subclass_levels": {
+        "_path": [
+          "subclasses",
+          "berserker",
+          "levels"
+        ]
+      }
     },
     "champion": {
       "_path": [
@@ -97205,8 +97189,182 @@
         "name": "Fighter"
       },
       "description": "The archetypal Champion focuses on the development of raw physical power honed to deadly perfection. Those who model themselves on this archetype combine rigorous training with physical excellence to deal devastating blows.",
+      "levels": {
+        "3": {
+          "_path": [
+            "subclasses",
+            "champion",
+            "levels",
+            "3"
+          ],
+          "class": {
+            "_path": [
+              "classes",
+              "fighter"
+            ],
+            "name": "Fighter"
+          },
+          "features": [
+            {
+              "_path": [
+                "features",
+                "improved_critical"
+              ],
+              "name": "Improved Critical"
+            }
+          ],
+          "level": 3,
+          "subclass": {
+            "_path": [
+              "subclasses",
+              "champion"
+            ],
+            "name": "Champion"
+          }
+        },
+        "7": {
+          "_path": [
+            "subclasses",
+            "champion",
+            "levels",
+            "7"
+          ],
+          "class": {
+            "_path": [
+              "classes",
+              "fighter"
+            ],
+            "name": "Fighter"
+          },
+          "features": [
+            {
+              "_path": [
+                "features",
+                "remarkable_athlete"
+              ],
+              "name": "Remarkable Athlete"
+            }
+          ],
+          "level": 7,
+          "subclass": {
+            "_path": [
+              "subclasses",
+              "champion"
+            ],
+            "name": "Champion"
+          }
+        },
+        "10": {
+          "_path": [
+            "subclasses",
+            "champion",
+            "levels",
+            "10"
+          ],
+          "class": {
+            "_path": [
+              "classes",
+              "fighter"
+            ],
+            "name": "Fighter"
+          },
+          "feature_choices": [
+            {
+              "_path": [
+                "features",
+                "choose_additional_fighting_style"
+              ],
+              "name": "Choose: Additional Fighting Style"
+            }
+          ],
+          "level": 10,
+          "subclass": {
+            "_path": [
+              "subclasses",
+              "champion"
+            ],
+            "name": "Champion"
+          }
+        },
+        "15": {
+          "_path": [
+            "subclasses",
+            "champion",
+            "levels",
+            "15"
+          ],
+          "class": {
+            "_path": [
+              "classes",
+              "fighter"
+            ],
+            "name": "Fighter"
+          },
+          "features": [
+            {
+              "_path": [
+                "features",
+                "superior_critical"
+              ],
+              "name": "Superior Critical"
+            }
+          ],
+          "level": 15,
+          "subclass": {
+            "_path": [
+              "subclasses",
+              "champion"
+            ],
+            "name": "Champion"
+          }
+        },
+        "18": {
+          "_path": [
+            "subclasses",
+            "champion",
+            "levels",
+            "18"
+          ],
+          "class": {
+            "_path": [
+              "classes",
+              "fighter"
+            ],
+            "name": "Fighter"
+          },
+          "features": [
+            {
+              "_path": [
+                "features",
+                "survivor"
+              ],
+              "name": "Survivor"
+            }
+          ],
+          "level": 18,
+          "subclass": {
+            "_path": [
+              "subclasses",
+              "champion"
+            ],
+            "name": "Champion"
+          }
+        },
+        "_path": [
+          "subclasses",
+          "champion",
+          "levels"
+        ]
+      },
       "name": "Champion",
-      "subclass_flavor": "Martial Archetype"
+      "subclass_flavor": "Martial Archetype",
+      "subclass_levels": {
+        "_path": [
+          "subclasses",
+          "champion",
+          "levels"
+        ]
+      }
     },
     "devotion": {
       "_path": [
@@ -97221,6 +97379,176 @@
         "name": "Paladin"
       },
       "description": "The Oath of Devotion binds a paladin to the loftiest ideals of justice, virtue, and order. Sometimes called cavaliers, white knights, or holy warriors, these paladins meet the ideal of the knight in shining armor, acting with honor in pursuit of justice and the greater good. They hold themselves to the highest standards of conduct, and some, for better or worse, hold the rest of the world to the same standards. Many who swear this oath are devoted to gods of law and good and use their gods' tenets as the measure of their devotion. They hold angels--the perfect servants of good--as their ideals, and incorporate images of angelic wings into their helmets or coats of arms.",
+      "levels": {
+        "3": {
+          "_path": [
+            "subclasses",
+            "devotion",
+            "levels",
+            "3"
+          ],
+          "class": {
+            "_path": [
+              "classes",
+              "paladin"
+            ],
+            "name": "Paladin"
+          },
+          "features": [
+            {
+              "_path": [
+                "features",
+                "channel_divinity"
+              ],
+              "name": "Channel Divinity"
+            }
+          ],
+          "level": 3,
+          "subclass": {
+            "_path": [
+              "subclasses",
+              "devotion"
+            ],
+            "name": "Devotion"
+          }
+        },
+        "7": {
+          "_path": [
+            "subclasses",
+            "devotion",
+            "levels",
+            "7"
+          ],
+          "class": {
+            "_path": [
+              "classes",
+              "paladin"
+            ],
+            "name": "Paladin"
+          },
+          "features": [
+            {
+              "_path": [
+                "features",
+                "aura_of_devotion"
+              ],
+              "name": "Aura of Devotion"
+            }
+          ],
+          "level": 7,
+          "subclass": {
+            "_path": [
+              "subclasses",
+              "devotion"
+            ],
+            "name": "Devotion"
+          },
+          "subclass_specific": {
+            "aura_range": 10
+          }
+        },
+        "15": {
+          "_path": [
+            "subclasses",
+            "devotion",
+            "levels",
+            "15"
+          ],
+          "class": {
+            "_path": [
+              "classes",
+              "paladin"
+            ],
+            "name": "Paladin"
+          },
+          "features": [
+            {
+              "_path": [
+                "features",
+                "purity_of_spirit"
+              ],
+              "name": "Purity of Spirit"
+            }
+          ],
+          "level": 15,
+          "subclass": {
+            "_path": [
+              "subclasses",
+              "devotion"
+            ],
+            "name": "Devotion"
+          },
+          "subclass_specific": {
+            "aura_range": 10
+          }
+        },
+        "18": {
+          "_path": [
+            "subclasses",
+            "devotion",
+            "levels",
+            "18"
+          ],
+          "class": {
+            "_path": [
+              "classes",
+              "paladin"
+            ],
+            "name": "Paladin"
+          },
+          "level": 18,
+          "subclass": {
+            "_path": [
+              "subclasses",
+              "devotion"
+            ],
+            "name": "Devotion"
+          },
+          "subclass_specific": {
+            "aura_range": 30
+          }
+        },
+        "20": {
+          "_path": [
+            "subclasses",
+            "devotion",
+            "levels",
+            "20"
+          ],
+          "class": {
+            "_path": [
+              "classes",
+              "paladin"
+            ],
+            "name": "Paladin"
+          },
+          "features": [
+            {
+              "_path": [
+                "features",
+                "holy_nimbus"
+              ],
+              "name": "Holy Nimbus"
+            }
+          ],
+          "level": 20,
+          "subclass": {
+            "_path": [
+              "subclasses",
+              "devotion"
+            ],
+            "name": "Devotion"
+          },
+          "subclass_specific": {
+            "aura_range": 30
+          }
+        },
+        "_path": [
+          "subclasses",
+          "devotion",
+          "levels"
+        ]
+      },
       "name": "Devotion",
       "spells": [
         {
@@ -97413,7 +97741,14 @@
           }
         }
       ],
-      "subclass_flavor": "Sacred Oath"
+      "subclass_flavor": "Sacred Oath",
+      "subclass_levels": {
+        "_path": [
+          "subclasses",
+          "devotion",
+          "levels"
+        ]
+      }
     },
     "draconic": {
       "_path": [
@@ -97428,8 +97763,159 @@
         "name": "Sorcerer"
       },
       "description": "Your innate magic comes from draconic magic that was mingled with your blood or that of your ancestors. Most often, sorcerers with this origin trace their descent back to a mighty sorcerer of ancient times who made a bargain with a dragon or who might even have claimed a dragon parent. Some of these bloodlines are well established in the world, but most are obscure. Any given sorcerer could be the first of a new bloodline, as a result of a pact or some other exceptional circumstance.",
+      "levels": {
+        "1": {
+          "_path": [
+            "subclasses",
+            "draconic",
+            "levels",
+            "1"
+          ],
+          "class": {
+            "_path": [
+              "classes",
+              "sorcerer"
+            ],
+            "name": "Sorcerer"
+          },
+          "feature_choices": [
+            {
+              "_path": [
+                "features",
+                "choose_dragon_ancestor"
+              ],
+              "name": "Choose: Dragon Ancestor"
+            }
+          ],
+          "features": [
+            {
+              "_path": [
+                "features",
+                "draconic_resilience"
+              ],
+              "name": "Draconic Resilience"
+            }
+          ],
+          "level": 1,
+          "subclass": {
+            "_path": [
+              "subclasses",
+              "draconic"
+            ],
+            "name": "Draconic"
+          }
+        },
+        "6": {
+          "_path": [
+            "subclasses",
+            "draconic",
+            "levels",
+            "6"
+          ],
+          "class": {
+            "_path": [
+              "classes",
+              "sorcerer"
+            ],
+            "name": "Sorcerer"
+          },
+          "features": [
+            {
+              "_path": [
+                "features",
+                "elemental_affinity"
+              ],
+              "name": "Elemental Affinity"
+            }
+          ],
+          "level": 6,
+          "subclass": {
+            "_path": [
+              "subclasses",
+              "draconic"
+            ],
+            "name": "Draconic"
+          }
+        },
+        "14": {
+          "_path": [
+            "subclasses",
+            "draconic",
+            "levels",
+            "14"
+          ],
+          "class": {
+            "_path": [
+              "classes",
+              "sorcerer"
+            ],
+            "name": "Sorcerer"
+          },
+          "features": [
+            {
+              "_path": [
+                "features",
+                "dragon_wings"
+              ],
+              "name": "Dragon Wings"
+            }
+          ],
+          "level": 14,
+          "subclass": {
+            "_path": [
+              "subclasses",
+              "draconic"
+            ],
+            "name": "Draconic"
+          }
+        },
+        "18": {
+          "_path": [
+            "subclasses",
+            "draconic",
+            "levels",
+            "18"
+          ],
+          "class": {
+            "_path": [
+              "classes",
+              "sorcerer"
+            ],
+            "name": "Sorcerer"
+          },
+          "features": [
+            {
+              "_path": [
+                "features",
+                "draconic_presence"
+              ],
+              "name": "Draconic Presence"
+            }
+          ],
+          "level": 18,
+          "subclass": {
+            "_path": [
+              "subclasses",
+              "draconic"
+            ],
+            "name": "Draconic"
+          }
+        },
+        "_path": [
+          "subclasses",
+          "draconic",
+          "levels"
+        ]
+      },
       "name": "Draconic",
-      "subclass_flavor": "Sorcerous Origins"
+      "subclass_flavor": "Sorcerous Origins",
+      "subclass_levels": {
+        "_path": [
+          "subclasses",
+          "draconic",
+          "levels"
+        ]
+      }
     },
     "evocation": {
       "_path": [
@@ -97444,8 +97930,157 @@
         "name": "Wizard"
       },
       "description": "You focus your study on magic that creates powerful elemental effects such as bitter cold, searing flame, rolling thunder, crackling lightning, and burning acid. Some evokers find employment in military forces, serving as artillery to blast enemy armies from afar. Others use their spectacular power to protect the weak, while some seek their own gain as bandits, adventurers, or aspiring tyrants.",
+      "levels": {
+        "2": {
+          "_path": [
+            "subclasses",
+            "evocation",
+            "levels",
+            "2"
+          ],
+          "class": {
+            "_path": [
+              "classes",
+              "wizard"
+            ],
+            "name": "Wizard"
+          },
+          "features": [
+            {
+              "_path": [
+                "features",
+                "evocation_savant"
+              ],
+              "name": "Evocation Savant"
+            },
+            {
+              "_path": [
+                "features",
+                "sculpt_spells"
+              ],
+              "name": "Sculpt Spells"
+            }
+          ],
+          "level": 2,
+          "subclass": {
+            "_path": [
+              "subclasses",
+              "evocation"
+            ],
+            "name": "Evocation"
+          }
+        },
+        "6": {
+          "_path": [
+            "subclasses",
+            "evocation",
+            "levels",
+            "6"
+          ],
+          "class": {
+            "_path": [
+              "classes",
+              "wizard"
+            ],
+            "name": "Wizard"
+          },
+          "features": [
+            {
+              "_path": [
+                "features",
+                "potent_cantrip"
+              ],
+              "name": "Potent Cantrip"
+            }
+          ],
+          "level": 6,
+          "subclass": {
+            "_path": [
+              "subclasses",
+              "evocation"
+            ],
+            "name": "Evocation"
+          }
+        },
+        "10": {
+          "_path": [
+            "subclasses",
+            "evocation",
+            "levels",
+            "10"
+          ],
+          "class": {
+            "_path": [
+              "classes",
+              "wizard"
+            ],
+            "name": "Wizard"
+          },
+          "features": [
+            {
+              "_path": [
+                "features",
+                "empowered_evocation"
+              ],
+              "name": "Empowered Evocation"
+            }
+          ],
+          "level": 10,
+          "subclass": {
+            "_path": [
+              "subclasses",
+              "evocation"
+            ],
+            "name": "Evocation"
+          }
+        },
+        "14": {
+          "_path": [
+            "subclasses",
+            "evocation",
+            "levels",
+            "14"
+          ],
+          "class": {
+            "_path": [
+              "classes",
+              "wizard"
+            ],
+            "name": "Wizard"
+          },
+          "features": [
+            {
+              "_path": [
+                "features",
+                "overchannel"
+              ],
+              "name": "Overchannel"
+            }
+          ],
+          "level": 14,
+          "subclass": {
+            "_path": [
+              "subclasses",
+              "evocation"
+            ],
+            "name": "Evocation"
+          }
+        },
+        "_path": [
+          "subclasses",
+          "evocation",
+          "levels"
+        ]
+      },
       "name": "Evocation",
-      "subclass_flavor": "Arcane Tradition"
+      "subclass_flavor": "Arcane Tradition",
+      "subclass_levels": {
+        "_path": [
+          "subclasses",
+          "evocation",
+          "levels"
+        ]
+      }
     },
     "fiend": {
       "_path": [
@@ -97460,6 +98095,141 @@
         "name": "Warlock"
       },
       "description": "You have made a pact with a fiend from the lower planes of existence, a being whose aims are evil, even if you strive against those aims. Such beings desire the corruption or destruction of all things, ultimately including you. Fiends powerful enough to forge a pact include demon lords such as Demogorgon, Orcus, Fraz'Urb-luu, and Baphomet; archdevils such as Asmodeus, Dispater, Mephistopheles, and Belial; pit fiends and balors that are especially mighty; and ultroloths and other lords of the yugoloths.",
+      "levels": {
+        "1": {
+          "_path": [
+            "subclasses",
+            "fiend",
+            "levels",
+            "1"
+          ],
+          "class": {
+            "_path": [
+              "classes",
+              "warlock"
+            ],
+            "name": "Warlock"
+          },
+          "features": [
+            {
+              "_path": [
+                "features",
+                "dark_ones_blessing"
+              ],
+              "name": "Dark One's Blessing"
+            }
+          ],
+          "level": 1,
+          "subclass": {
+            "_path": [
+              "subclasses",
+              "fiend"
+            ],
+            "name": "The Fiend"
+          }
+        },
+        "6": {
+          "_path": [
+            "subclasses",
+            "fiend",
+            "levels",
+            "6"
+          ],
+          "class": {
+            "_path": [
+              "classes",
+              "warlock"
+            ],
+            "name": "Warlock"
+          },
+          "features": [
+            {
+              "_path": [
+                "features",
+                "dark_ones_own_luck"
+              ],
+              "name": "Dark One's Own Luck"
+            }
+          ],
+          "level": 6,
+          "subclass": {
+            "_path": [
+              "subclasses",
+              "fiend"
+            ],
+            "name": "The Fiend"
+          }
+        },
+        "10": {
+          "_path": [
+            "subclasses",
+            "fiend",
+            "levels",
+            "10"
+          ],
+          "class": {
+            "_path": [
+              "classes",
+              "warlock"
+            ],
+            "name": "Warlock"
+          },
+          "features": [
+            {
+              "_path": [
+                "features",
+                "fiendish_resilience"
+              ],
+              "name": "Fiendish Resilience"
+            }
+          ],
+          "level": 10,
+          "subclass": {
+            "_path": [
+              "subclasses",
+              "fiend"
+            ],
+            "name": "The Fiend"
+          }
+        },
+        "14": {
+          "_path": [
+            "subclasses",
+            "fiend",
+            "levels",
+            "14"
+          ],
+          "class": {
+            "_path": [
+              "classes",
+              "warlock"
+            ],
+            "name": "Warlock"
+          },
+          "features": [
+            {
+              "_path": [
+                "features",
+                "hurl_through_hell"
+              ],
+              "name": "Hurl Through Hell"
+            }
+          ],
+          "level": 14,
+          "subclass": {
+            "_path": [
+              "subclasses",
+              "fiend"
+            ],
+            "name": "Fiend"
+          }
+        },
+        "_path": [
+          "subclasses",
+          "fiend",
+          "levels"
+        ]
+      },
       "name": "Fiend",
       "spells": [
         {
@@ -97673,7 +98443,14 @@
           }
         }
       ],
-      "subclass_flavor": "Otherworldly Patron"
+      "subclass_flavor": "Otherworldly Patron",
+      "subclass_levels": {
+        "_path": [
+          "subclasses",
+          "fiend",
+          "levels"
+        ]
+      }
     },
     "hunter": {
       "_path": [
@@ -97688,8 +98465,150 @@
         "name": "Ranger"
       },
       "description": "Emulating the Hunter archetype means accepting your place as a bulwark between civilization and the terrors of the wilderness. As you walk the Hunter's path, you learn specialized techniques for fighting the threats you face, from rampaging ogres and hordes of orcs to towering giants and terrifying dragons.",
+      "levels": {
+        "3": {
+          "_path": [
+            "subclasses",
+            "hunter",
+            "levels",
+            "3"
+          ],
+          "class": {
+            "_path": [
+              "classes",
+              "ranger"
+            ],
+            "name": "Ranger"
+          },
+          "feature_choices": [
+            {
+              "_path": [
+                "features",
+                "choose_hunters_prey"
+              ],
+              "name": "Choose: Hunter's Prey"
+            }
+          ],
+          "level": 3,
+          "subclass": {
+            "_path": [
+              "subclasses",
+              "hunter"
+            ],
+            "name": "Hunter"
+          }
+        },
+        "7": {
+          "_path": [
+            "subclasses",
+            "hunter",
+            "levels",
+            "7"
+          ],
+          "class": {
+            "_path": [
+              "classes",
+              "ranger"
+            ],
+            "name": "Ranger"
+          },
+          "feature_choices": [
+            {
+              "_path": [
+                "features",
+                "choose_defensive_tactics"
+              ],
+              "name": "Choose: Defensive Tactics"
+            }
+          ],
+          "level": 7,
+          "subclass": {
+            "_path": [
+              "subclasses",
+              "hunter"
+            ],
+            "name": "Hunter"
+          }
+        },
+        "11": {
+          "_path": [
+            "subclasses",
+            "hunter",
+            "levels",
+            "11"
+          ],
+          "class": {
+            "_path": [
+              "classes",
+              "ranger"
+            ],
+            "name": "Ranger"
+          },
+          "feature_choices": [
+            {
+              "_path": [
+                "features",
+                "choose_multiattack"
+              ],
+              "name": "Choose: Multiattack"
+            }
+          ],
+          "level": 11,
+          "subclass": {
+            "_path": [
+              "subclasses",
+              "hunter"
+            ],
+            "name": "Hunter"
+          }
+        },
+        "15": {
+          "_path": [
+            "subclasses",
+            "hunter",
+            "levels",
+            "15"
+          ],
+          "class": {
+            "_path": [
+              "classes",
+              "ranger"
+            ],
+            "name": "Ranger"
+          },
+          "feature_choices": [
+            {
+              "_path": [
+                "features",
+                "choose_superior_hunters_defense"
+              ],
+              "name": "Choose: Superior Hunter's Defense"
+            }
+          ],
+          "level": 15,
+          "subclass": {
+            "_path": [
+              "subclasses",
+              "hunter"
+            ],
+            "name": "Hunter"
+          }
+        },
+        "_path": [
+          "subclasses",
+          "hunter",
+          "levels"
+        ]
+      },
       "name": "Hunter",
-      "subclass_flavor": "Ranger Archetype"
+      "subclass_flavor": "Ranger Archetype",
+      "subclass_levels": {
+        "_path": [
+          "subclasses",
+          "hunter",
+          "levels"
+        ]
+      }
     },
     "land": {
       "_path": [
@@ -97704,6 +98623,148 @@
         "name": "Druid"
       },
       "description": "The Circle of the Land is made up of mystics and sages who safeguard ancient knowledge and rites through a vast oral tradition. These druids meet within sacred circles of trees or standing stones to whisper primal secrets in Druidic. The circle's wisest members preside as the chief priests of communities that hold to the Old Faith and serve as advisors to the rulers of those folk. As a member of this circle, your magic is influenced by the land where you were initiated into the circle's mysterious rites.",
+      "levels": {
+        "2": {
+          "_path": [
+            "subclasses",
+            "land",
+            "levels",
+            "2"
+          ],
+          "class": {
+            "_path": [
+              "classes",
+              "druid"
+            ],
+            "name": "Druid"
+          },
+          "features": [
+            {
+              "_path": [
+                "features",
+                "bonus_cantrip"
+              ],
+              "name": "Bonus Cantrip"
+            },
+            {
+              "_path": [
+                "features",
+                "natural_recovery"
+              ],
+              "name": "Natural Recovery"
+            }
+          ],
+          "level": 2,
+          "subclass": {
+            "_path": [
+              "subclasses",
+              "land"
+            ],
+            "name": "Land"
+          }
+        },
+        "6": {
+          "_path": [
+            "subclasses",
+            "land",
+            "levels",
+            "6"
+          ],
+          "class": {
+            "_path": [
+              "classes",
+              "druid"
+            ],
+            "name": "Druid"
+          },
+          "features": [
+            {
+              "_path": [
+                "features",
+                "druid_lands_stride"
+              ],
+              "name": "Land's Stride"
+            }
+          ],
+          "level": 6,
+          "subclass": {
+            "_path": [
+              "subclasses",
+              "land"
+            ],
+            "name": "Land"
+          }
+        },
+        "10": {
+          "_path": [
+            "subclasses",
+            "land",
+            "levels",
+            "10"
+          ],
+          "class": {
+            "_path": [
+              "classes",
+              "druid"
+            ],
+            "name": "Druid"
+          },
+          "features": [
+            {
+              "_path": [
+                "features",
+                "natures_ward"
+              ],
+              "name": "Nature's Ward"
+            }
+          ],
+          "level": 10,
+          "subclass": {
+            "_path": [
+              "subclasses",
+              "land"
+            ],
+            "name": "Land"
+          }
+        },
+        "14": {
+          "_path": [
+            "subclasses",
+            "land",
+            "levels",
+            "14"
+          ],
+          "class": {
+            "_path": [
+              "classes",
+              "druid"
+            ],
+            "name": "Druid"
+          },
+          "features": [
+            {
+              "_path": [
+                "features",
+                "natures_sanctuary"
+              ],
+              "name": "Nature's Sanctuary"
+            }
+          ],
+          "level": 14,
+          "subclass": {
+            "_path": [
+              "subclasses",
+              "land"
+            ],
+            "name": "Land"
+          }
+        },
+        "_path": [
+          "subclasses",
+          "land",
+          "levels"
+        ]
+      },
       "name": "Land",
       "spells": [
         {
@@ -99331,7 +100392,14 @@
           }
         }
       ],
-      "subclass_flavor": "Druid Circle"
+      "subclass_flavor": "Druid Circle",
+      "subclass_levels": {
+        "_path": [
+          "subclasses",
+          "land",
+          "levels"
+        ]
+      }
     },
     "life": {
       "_path": [
@@ -99346,6 +100414,180 @@
         "name": "Cleric"
       },
       "description": "The Life domain focuses on the vibrant positive energy--one of the fundamental forces of the universe--that sustains all life. The gods of life promote vitality and health through healing the sick and wounded, caring for those in need, and driving away the forces of death and undeath. Almost any non-evil deity can claim influence over this domain, particularly agricultural deities, sun gods, gods of healing or endurance, and gods of home and community.",
+      "levels": {
+        "1": {
+          "_path": [
+            "subclasses",
+            "life",
+            "levels",
+            "1"
+          ],
+          "class": {
+            "_path": [
+              "classes",
+              "cleric"
+            ],
+            "name": "Cleric"
+          },
+          "features": [
+            {
+              "_path": [
+                "features",
+                "bonus_proficiency"
+              ],
+              "name": "Bonus Proficiency"
+            },
+            {
+              "_path": [
+                "features",
+                "disciple_of_life"
+              ],
+              "name": "Disciple of Life"
+            }
+          ],
+          "level": 1,
+          "subclass": {
+            "_path": [
+              "subclasses",
+              "life"
+            ],
+            "name": "Life"
+          }
+        },
+        "2": {
+          "_path": [
+            "subclasses",
+            "life",
+            "levels",
+            "2"
+          ],
+          "class": {
+            "_path": [
+              "classes",
+              "cleric"
+            ],
+            "name": "Cleric"
+          },
+          "features": [
+            {
+              "_path": [
+                "features",
+                "channel_divinity_preserve_life"
+              ],
+              "name": "Channel Divinity: Preserve Life"
+            }
+          ],
+          "level": 2,
+          "subclass": {
+            "_path": [
+              "subclasses",
+              "life"
+            ],
+            "name": "Life"
+          }
+        },
+        "6": {
+          "_path": [
+            "subclasses",
+            "life",
+            "levels",
+            "6"
+          ],
+          "class": {
+            "_path": [
+              "classes",
+              "cleric"
+            ],
+            "name": "Cleric"
+          },
+          "features": [
+            {
+              "_path": [
+                "features",
+                "blessed_healer"
+              ],
+              "name": "Blessed Healer"
+            }
+          ],
+          "level": 6,
+          "subclass": {
+            "_path": [
+              "subclasses",
+              "life"
+            ],
+            "name": "Life"
+          }
+        },
+        "8": {
+          "_path": [
+            "subclasses",
+            "life",
+            "levels",
+            "8"
+          ],
+          "class": {
+            "_path": [
+              "classes",
+              "cleric"
+            ],
+            "name": "Cleric"
+          },
+          "features": [
+            {
+              "_path": [
+                "features",
+                "divine_strike"
+              ],
+              "name": "Divine Strike"
+            }
+          ],
+          "level": 8,
+          "subclass": {
+            "_path": [
+              "subclasses",
+              "life"
+            ],
+            "name": "Life"
+          }
+        },
+        "17": {
+          "_path": [
+            "subclasses",
+            "life",
+            "levels",
+            "17"
+          ],
+          "class": {
+            "_path": [
+              "classes",
+              "cleric"
+            ],
+            "name": "Cleric"
+          },
+          "features": [
+            {
+              "_path": [
+                "features",
+                "supreme_healing"
+              ],
+              "name": "Supreme Healing"
+            }
+          ],
+          "level": 17,
+          "subclass": {
+            "_path": [
+              "subclasses",
+              "life"
+            ],
+            "name": "Life"
+          }
+        },
+        "_path": [
+          "subclasses",
+          "life",
+          "levels"
+        ]
+      },
       "name": "Life",
       "spells": [
         {
@@ -99538,7 +100780,14 @@
           }
         }
       ],
-      "subclass_flavor": "Divine Domain"
+      "subclass_flavor": "Divine Domain",
+      "subclass_levels": {
+        "_path": [
+          "subclasses",
+          "life",
+          "levels"
+        ]
+      }
     },
     "lore": {
       "_path": [
@@ -99670,7 +100919,14 @@
         ]
       },
       "name": "Lore",
-      "subclass_flavor": "Bard College"
+      "subclass_flavor": "Bard College",
+      "subclass_levels": {
+        "_path": [
+          "subclasses",
+          "lore",
+          "levels"
+        ]
+      }
     },
     "open_hand": {
       "_path": [
@@ -99685,8 +100941,150 @@
         "name": "Monk"
       },
       "description": "Monks of the Way of the Open Hand are the ultimate masters of martial arts combat, whether armed or unarmed. They learn techniques to push and trip their opponents, manipulate ki to heal damage to their bodies, and practice advanced meditation that can protect them from harm.",
+      "levels": {
+        "3": {
+          "_path": [
+            "subclasses",
+            "open_hand",
+            "levels",
+            "3"
+          ],
+          "class": {
+            "_path": [
+              "classes",
+              "monk"
+            ],
+            "name": "Monk"
+          },
+          "features": [
+            {
+              "_path": [
+                "features",
+                "open_hand_technique"
+              ],
+              "name": "Open Hand Technique"
+            }
+          ],
+          "level": 3,
+          "subclass": {
+            "_path": [
+              "subclasses",
+              "open_hand"
+            ],
+            "name": "Open Hand"
+          }
+        },
+        "6": {
+          "_path": [
+            "subclasses",
+            "open_hand",
+            "levels",
+            "6"
+          ],
+          "class": {
+            "_path": [
+              "classes",
+              "monk"
+            ],
+            "name": "Monk"
+          },
+          "features": [
+            {
+              "_path": [
+                "features",
+                "wholeness_of_body"
+              ],
+              "name": "Wholeness of Body"
+            }
+          ],
+          "level": 6,
+          "subclass": {
+            "_path": [
+              "subclasses",
+              "open_hand"
+            ],
+            "name": "Open Hand"
+          }
+        },
+        "11": {
+          "_path": [
+            "subclasses",
+            "open_hand",
+            "levels",
+            "11"
+          ],
+          "class": {
+            "_path": [
+              "classes",
+              "monk"
+            ],
+            "name": "Monk"
+          },
+          "features": [
+            {
+              "_path": [
+                "features",
+                "tranquility"
+              ],
+              "name": "Tranquility"
+            }
+          ],
+          "level": 11,
+          "subclass": {
+            "_path": [
+              "subclasses",
+              "open_hand"
+            ],
+            "name": "Open Hand"
+          }
+        },
+        "17": {
+          "_path": [
+            "subclasses",
+            "open_hand",
+            "levels",
+            "17"
+          ],
+          "class": {
+            "_path": [
+              "classes",
+              "monk"
+            ],
+            "name": "Monk"
+          },
+          "features": [
+            {
+              "_path": [
+                "features",
+                "quivering_palm"
+              ],
+              "name": "Quiverying Palm"
+            }
+          ],
+          "level": 17,
+          "subclass": {
+            "_path": [
+              "subclasses",
+              "open_hand"
+            ],
+            "name": "Open Hand"
+          }
+        },
+        "_path": [
+          "subclasses",
+          "open_hand",
+          "levels"
+        ]
+      },
       "name": "Open Hand",
-      "subclass_flavor": "Monastic Tradition"
+      "subclass_flavor": "Monastic Tradition",
+      "subclass_levels": {
+        "_path": [
+          "subclasses",
+          "open_hand",
+          "levels"
+        ]
+      }
     },
     "thief": {
       "_path": [
@@ -99701,8 +101099,157 @@
         "name": "Rogue"
       },
       "description": "You hone your skills in the larcenous arts. Burglars, bandits, cutpurses, and other criminals typically follow this archetype, but so do rogues who prefer to think of themselves as professional treasure seekers, explorers, delvers, and investigators. In addition to improving your agility and stealth, you learn skills useful for delving into ancient ruins, reading unfamiliar languages, and using magic items you normally couldn't employ.",
+      "levels": {
+        "3": {
+          "_path": [
+            "subclasses",
+            "thief",
+            "levels",
+            "3"
+          ],
+          "class": {
+            "_path": [
+              "classes",
+              "rogue"
+            ],
+            "name": "Rogue"
+          },
+          "features": [
+            {
+              "_path": [
+                "features",
+                "fast_hands"
+              ],
+              "name": "Fast Hands"
+            },
+            {
+              "_path": [
+                "features",
+                "second_story_work"
+              ],
+              "name": "Second-Story Work"
+            }
+          ],
+          "level": 3,
+          "subclass": {
+            "_path": [
+              "subclasses",
+              "thief"
+            ],
+            "name": "Thief"
+          }
+        },
+        "9": {
+          "_path": [
+            "subclasses",
+            "thief",
+            "levels",
+            "9"
+          ],
+          "class": {
+            "_path": [
+              "classes",
+              "rogue"
+            ],
+            "name": "Rogue"
+          },
+          "features": [
+            {
+              "_path": [
+                "features",
+                "supreme_sneak"
+              ],
+              "name": "Supreme Sneak"
+            }
+          ],
+          "level": 9,
+          "subclass": {
+            "_path": [
+              "subclasses",
+              "thief"
+            ],
+            "name": "Thief"
+          }
+        },
+        "13": {
+          "_path": [
+            "subclasses",
+            "thief",
+            "levels",
+            "13"
+          ],
+          "class": {
+            "_path": [
+              "classes",
+              "rogue"
+            ],
+            "name": "Rogue"
+          },
+          "features": [
+            {
+              "_path": [
+                "features",
+                "use_magic_device"
+              ],
+              "name": "Use Magic Device"
+            }
+          ],
+          "level": 13,
+          "subclass": {
+            "_path": [
+              "subclasses",
+              "thief"
+            ],
+            "name": "Thief"
+          }
+        },
+        "17": {
+          "_path": [
+            "subclasses",
+            "thief",
+            "levels",
+            "17"
+          ],
+          "class": {
+            "_path": [
+              "classes",
+              "rogue"
+            ],
+            "name": "Rogue"
+          },
+          "features": [
+            {
+              "_path": [
+                "features",
+                "thiefs_reflexes"
+              ],
+              "name": "Thief's Reflexes"
+            }
+          ],
+          "level": 17,
+          "subclass": {
+            "_path": [
+              "subclasses",
+              "thief"
+            ],
+            "name": "Thief"
+          }
+        },
+        "_path": [
+          "subclasses",
+          "thief",
+          "levels"
+        ]
+      },
       "name": "Thief",
-      "subclass_flavor": "Roguish Archetype"
+      "subclass_flavor": "Roguish Archetype",
+      "subclass_levels": {
+        "_path": [
+          "subclasses",
+          "thief",
+          "levels"
+        ]
+      }
     }
   },
   "subraces": {
