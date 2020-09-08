@@ -12,7 +12,7 @@
     "ramda-adjunct": "^2.27.0",
     "react": "16.13.1",
     "react-dom": "16.13.1",
-    "tailwindcss": "^1.8.4"
+    "tailwindcss": "^1.8.5"
   },
   "devDependencies": {
     "dotenv": "^8.2.0"
