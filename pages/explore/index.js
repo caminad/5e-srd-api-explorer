@@ -1,14 +1,22 @@
-import { mapObjIndexed, pipe, replace, toUpper } from 'ramda';
 import DATA from '../../data/5e.json';
 import CatchallPage from './[...path]';
 
-const titleize = pipe(replace(/_/g, ' '), replace(/\b[a-z]/g, toUpper));
+/**
+ * @param {string} s
+ */
+const toUpperCase = (s) => s.toUpperCase();
+
+/**
+ * @param {string} s
+ */
+const titleize = (s) => s.replace(/_/g, ' ').replace(/\b[a-z]/g, toUpperCase);
 
 export function getStaticProps() {
-  const data = mapObjIndexed(
-    ({ _path }, key) => ({ _path, name: titleize(key) }),
-    DATA
-  );
+  const data = {};
+
+  for (const [key, { _path }] of Object.entries(DATA)) {
+    data[key] = { _path, name: titleize(key) };
+  }
 
   return { props: { path: [], data } };
 }
