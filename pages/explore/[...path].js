@@ -3,6 +3,8 @@ import Entity from '../../components/entity';
 import DATA from '../../data/5e.json';
 import PageNotFound from '../404';
 
+const { hasOwnProperty } = Object.prototype;
+
 /**
  * @param {unknown} data
  */
@@ -23,12 +25,6 @@ function summarize(data) {
   return result;
 }
 
-/**
- * @param {{ [key: string]: unknown }} data
- * @param {string[]} path
- */
-const dig = (data, path) => path.reduce((prev, key) => prev?.[key], data);
-
 /**@type {import('next').GetStaticPaths<{ path: string[] }>} */
 export async function getStaticPaths() {
   return {
@@ -43,9 +39,15 @@ export async function getStaticPaths() {
 export async function getStaticProps(context) {
   const { path } = context.params;
 
-  let data = dig(DATA, path) ?? null;
+  let data = path.reduce((prev, key) => {
+    if (prev != null && hasOwnProperty.call(prev, key)) {
+      return prev[key];
+    } else {
+      return null;
+    }
+  }, DATA);
 
-  if (data && path.length === 1) {
+  if (data != null && path.length === 1) {
     data = summarize(data);
   }
 
