@@ -55,7 +55,7 @@ function Footer() {
       © 2020{' '}
       <a
         className="underline whitespace-no-wrap"
-        href="https://twitter.com/kitibyte"
+        href="https://twitter.com/DavidJones418"
       >
         David Jones
       </a>
@@ -70,7 +70,7 @@ function Footer() {
       {' · '}
       <a
         className="underline whitespace-no-wrap"
-        href="https://github.com/kitibyte/5e-srd-api-explorer"
+        href="https://github.com/DavidJones418/5e-srd-api-explorer"
       >
         source
       </a>
