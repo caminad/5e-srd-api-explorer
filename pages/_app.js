@@ -81,9 +81,19 @@ function Footer() {
 /**@param {import('next/app').AppProps} props */
 export default function App({ Component, pageProps }) {
   return (
-    <div className="grid min-h-screen p-2 m-auto text-gray-900 bg-white grid-rows-layout">
+    <div
+      className="grid min-h-screen p-2 m-auto text-gray-900 bg-white grid-rows-layout"
+      style={{
+        fontFamily:
+          'Literata, Georgia, Cambria, "Times New Roman", Times, serif',
+      }}
+    >
       <Head>
         <title>D&amp;D 5th Edition Data Explorer</title>
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Literata:ital,wght@0,400;0,700;1,400&display=swap"
+        />
       </Head>
 
       <Nav {...pageProps} />
