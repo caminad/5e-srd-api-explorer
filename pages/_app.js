@@ -1,7 +1,7 @@
 import { useRouter } from 'next/dist/client/router';
 import Head from 'next/head';
 import Link from 'next/link';
-import '../styles/tailwind.css';
+import 'tailwindcss/tailwind.css';
 
 /**
  * @param {object} props
@@ -21,7 +21,7 @@ function NavLink({ href, as, children }) {
             {children}
           </a>
         ) : (
-          <a className="px-1 opacity-50 transition-opacity duration-75 hover:opacity-100 focus:opacity-100">
+          <a className="px-1 transition-opacity duration-75 opacity-50 hover:opacity-100 focus:opacity-100">
             {children}
           </a>
         )}
@@ -51,7 +51,7 @@ function Nav({ path }) {
 
 function Footer() {
   return (
-    <footer className="mt-8 pt-8 pb-2 text-center text-sm">
+    <footer className="pt-8 pb-2 mt-8 text-sm text-center">
       © 2020{' '}
       <a
         className="underline whitespace-no-wrap"
@@ -81,7 +81,7 @@ function Footer() {
 /**@param {import('next/app').AppProps} props */
 export default function App({ Component, pageProps }) {
   return (
-    <div className="m-auto p-2 min-h-screen grid grid-rows-layout text-gray-900 bg-white">
+    <div className="grid min-h-screen p-2 m-auto text-gray-900 bg-white grid-rows-layout">
       <Head>
         <title>D&amp;D 5th Edition Data Explorer</title>
       </Head>
